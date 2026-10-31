@@ -1,0 +1,17 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py migration v2 10
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-e57c3674b969 Creating 
+ Container horizonte-lab-tools-run-e57c3674b969 Created 
+{"utc": "2026-10-31T22:30:56.765000+00:00", "cliente": "v2", "iteracao": 0, "valor": null, "duracao_ms": 291.6217810015951}
+{"utc": "2026-10-31T22:30:57.787896+00:00", "cliente": "v2", "iteracao": 1, "valor": "ana.1@exemplo.test", "duracao_ms": 22.680063997540856}
+{"utc": "2026-10-31T22:30:58.816348+00:00", "cliente": "v2", "iteracao": 2, "valor": "ana.2@exemplo.test", "duracao_ms": 28.219995001563802}
+{"utc": "2026-10-31T22:30:59.876813+00:00", "cliente": "v2", "iteracao": 3, "valor": "ana.3@exemplo.test", "duracao_ms": 60.18588900042232}
+{"utc": "2026-10-31T22:31:00.903795+00:00", "cliente": "v2", "iteracao": 4, "valor": "ana.4@exemplo.test", "duracao_ms": 26.625005000823876}
+{"utc": "2026-10-31T22:31:01.931498+00:00", "cliente": "v2", "iteracao": 5, "valor": null, "duracao_ms": 27.383630000258563}
+{"utc": "2026-10-31T22:31:02.958042+00:00", "cliente": "v2", "iteracao": 6, "valor": "ana.6@exemplo.test", "duracao_ms": 26.15197600243846}
+{"utc": "2026-10-31T22:31:03.977016+00:00", "cliente": "v2", "iteracao": 7, "valor": "ana.7@exemplo.test", "duracao_ms": 18.709719999606023}
+{"utc": "2026-10-31T22:31:05.005940+00:00", "cliente": "v2", "iteracao": 8, "valor": "ana.8@exemplo.test", "duracao_ms": 28.706758999760495}
+{"utc": "2026-10-31T22:31:06.035345+00:00", "cliente": "v2", "iteracao": 9, "valor": "ana.9@exemplo.test", "duracao_ms": 28.929255000548437}
+
+[exit=0]

@@ -1,0 +1,9 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T saga psql -X -v ON_ERROR_STOP=1 -U postgres -d pagamentos -At -c SELECT * FROM pagamento ORDER BY op;
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mt3_s1|aprovado|1
+t3_s2|rejeitado|0
+t3_s4|rejeitado|0
+t3_s5|rejeitado|0
+
+[exit=0]

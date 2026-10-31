@@ -1,0 +1,11 @@
+{
+  "RTO_observado_s": 46.32463964799899,
+  "janela_perda_observada_s": 0.6760115329998371,
+  "RTO_meta_600s_atendida": true,
+  "RPO_meta_60s_atendida": true,
+  "ids_legitimos_fora_do_alvo": [
+    3
+  ],
+  "base_segundos": 3.332337247000396,
+  "metodo": "mesmo relógio monotônico do host; inclui espera entre comandos; não reiniciar host durante ensaio"
+}

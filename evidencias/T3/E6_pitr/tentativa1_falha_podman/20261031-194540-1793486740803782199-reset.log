@@ -1,0 +1,107 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml stop origin destination restore-prep fault-destination fault-prep
+ Container horizonte-lab-origin-1 Stopping 
+ Container horizonte-lab-origin-1 Stopped 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml rm -f origin destination restore-prep fault-destination fault-prep
+Going to remove horizonte-lab-origin-1
+ Container horizonte-lab-origin-1 Removing 
+ Container horizonte-lab-origin-1 Removed 
+
+[exit=0]
+$ docker volume inspect horizonte-lab_origin_data
+[
+     {
+          "Name": "horizonte-lab_origin_data",
+          "Driver": "local",
+          "Mountpoint": "/home/math/.local/share/containers/storage/volumes/horizonte-lab_origin_data/_data",
+          "CreatedAt": "2026-10-31T19:38:55.698537122-03:00",
+          "Labels": {
+               "com.docker.compose.config-hash": "4136d0c879f48ba26af96efd023a8631b778017f3c7ca03bf42e22d9d8560324",
+               "com.docker.compose.project": "horizonte-lab",
+               "com.docker.compose.version": "5.3.1",
+               "com.docker.compose.volume": "origin_data"
+          },
+          "Scope": "local",
+          "Options": {},
+          "MountCount": 0,
+          "NeedsCopyUp": true,
+          "NeedsChown": true,
+          "LockNumber": 22
+     }
+]
+
+[exit=0]
+$ docker volume rm horizonte-lab_origin_data
+horizonte-lab_origin_data
+
+[exit=0]
+$ docker volume inspect horizonte-lab_destination_data
+[]
+Error: no such volume horizonte-lab_destination_data
+
+[exit=125]
+$ docker volume inspect horizonte-lab_archive_data
+[
+     {
+          "Name": "horizonte-lab_archive_data",
+          "Driver": "local",
+          "Mountpoint": "/home/math/.local/share/containers/storage/volumes/horizonte-lab_archive_data/_data",
+          "CreatedAt": "2026-10-31T19:38:55.70990421-03:00",
+          "Labels": {
+               "com.docker.compose.config-hash": "92acbaa12a38d9aacc80c27a7503ff5543ecf4fb0c4a8e492ff87d83592e692f",
+               "com.docker.compose.project": "horizonte-lab",
+               "com.docker.compose.version": "5.3.1",
+               "com.docker.compose.volume": "archive_data"
+          },
+          "Scope": "local",
+          "Options": {},
+          "MountCount": 0,
+          "NeedsCopyUp": true,
+          "NeedsChown": true,
+          "LockNumber": 23
+     }
+]
+
+[exit=0]
+$ docker volume rm horizonte-lab_archive_data
+horizonte-lab_archive_data
+
+[exit=0]
+$ docker volume inspect horizonte-lab_backup_data
+[
+     {
+          "Name": "horizonte-lab_backup_data",
+          "Driver": "local",
+          "Mountpoint": "/home/math/.local/share/containers/storage/volumes/horizonte-lab_backup_data/_data",
+          "CreatedAt": "2026-10-31T19:38:55.71980067-03:00",
+          "Labels": {
+               "com.docker.compose.config-hash": "221087ae5861ec2157ef78d42cfb71df8b9df496bd103ba31a6399c103a738a2",
+               "com.docker.compose.project": "horizonte-lab",
+               "com.docker.compose.version": "5.3.1",
+               "com.docker.compose.volume": "backup_data"
+          },
+          "Scope": "local",
+          "Options": {},
+          "MountCount": 0,
+          "NeedsCopyUp": true,
+          "NeedsChown": true,
+          "LockNumber": 24
+     }
+]
+
+[exit=0]
+$ docker volume rm horizonte-lab_backup_data
+horizonte-lab_backup_data
+
+[exit=0]
+$ docker volume inspect horizonte-lab_fault_destination_data
+[]
+Error: no such volume horizonte-lab_fault_destination_data
+
+[exit=125]
+$ docker volume inspect horizonte-lab_empty_archive_data
+[]
+Error: no such volume horizonte-lab_empty_archive_data
+
+[exit=125]

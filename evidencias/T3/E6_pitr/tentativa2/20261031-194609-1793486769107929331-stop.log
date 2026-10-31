@@ -1,0 +1,3 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml stop
+
+[exit=0]

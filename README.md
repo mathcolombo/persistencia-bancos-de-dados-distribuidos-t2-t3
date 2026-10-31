@@ -100,3 +100,23 @@ Cada chamada a `lab.py` cria um log com comando, saída e código de retorno em 
 Registrar imagem/digest, versões, linguagem e commit. `status` mostra os contêineres e o digest do PostgreSQL. As quatro imagens externas estão fixadas por tag e digest de manifesto consultado no registro oficial; registrar também o ambiente efetivamente usado na validação. A primeira construção baixa pacotes de sistema e dependências de suas fontes. O pacote não contém imagens Docker ou instaladores offline.
 
 Prazo e peso permanecem os do Plano: T1 D+4 (25%), T2 D+9 (35%), T3 D+14 (40%); grupos de 3–4; 3+4+5 horas. O kit reduz montagem de infraestrutura, mas o tempo real ainda deve ser medido com uma máquina representativa. Construção de imagens e problemas de instalação devem ser tratados no suporte previsto.
+
+## Execução desta entrega (T2 e T3)
+
+Trabalho individual de Matheus Colombo da Cruz, executado em 31/10/2026 com a linguagem **Python**.
+
+| Item | Versão efetiva |
+|---|---|
+| Sistema | Linux amd64 |
+| Contêineres | Podman 6.1.4 rootless (o comando `docker` é o Podman) com Docker Compose v5.3.1 |
+| PostgreSQL | 18.6, `postgres:18.6-bookworm@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650` |
+| Flyway | Community 13.7.0 |
+| Cliente | Python 3.12.9 e psycopg 3.2.6 (imagem `tools`) |
+
+**Ajustes necessários no Podman rootless:**
+
+1. `userns_mode: keep-id` no serviço `tools` do `compose.yaml`. Sem ele, o `--user 1000:1000` usado pelo `lab.py` vira um subuid sem permissão de escrita em `evidencias/execucoes` (`PermissionError`).
+2. `export PODMAN_COMPOSE_WARNING_LOGS=false` no terminal antes de usar o `lab.py`. Sem isso, o aviso `>>>> Executing external compose provider …` entra na saída lida pelo `lab.py` e o PITR falha com `Nome WAL inválido`.
+3. A última verificação do `lab.py doctor` (`docker info --format {{.OSType}}`) falha no Podman porque esse campo não existe. As outras verificações passam e o laboratório funciona.
+
+**Evidências versionadas** (cópias sem alteração dos logs de `evidencias/execucoes`, que continua ignorada pelo Git): `evidencias/T2/` (com o índice `LEIA.md`; a relação dos arquivos está em `modelos/evidencias.csv` do commit do T2) e `evidencias/T3/` (separadas por exercício, com o índice `LEIA.md` e o registro `registro.csv`). O relatório do T3 está em `modelos/relatorio.md`. O relatório do T2 está preservado na tag `T2`.

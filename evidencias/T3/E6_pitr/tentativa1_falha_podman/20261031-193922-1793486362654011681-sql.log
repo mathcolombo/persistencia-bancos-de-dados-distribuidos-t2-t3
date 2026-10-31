@@ -1,0 +1,13 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT pg_read_file('/backup/base/backup_label');
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mSTART WAL LOCATION: 0/3000028 (file 000000010000000000000003)
+CHECKPOINT LOCATION: 0/3000080
+BACKUP METHOD: streamed
+BACKUP FROM: primary
+START TIME: 2026-10-31 22:39:02 UTC
+LABEL: pg_basebackup base backup
+START TIMELINE: 1
+
+
+[exit=0]

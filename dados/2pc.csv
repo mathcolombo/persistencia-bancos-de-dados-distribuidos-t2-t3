@@ -1,7 +1,7 @@
 ordem,evento,estado_C,estado_P1,estado_P2
-1,C envia PREPARE,,,
-2,P1 e P2 persistem PREPARED e votam SIM,,,
-3,C persiste decisao COMMIT,,,
-4,P1 recebe COMMIT e confirma,,,
-5,C falha antes de enviar decisao a P2,,,
-6,P2 nao alcanca C nem recebe informacao de P1,,,
+1,C envia PREPARE,PREPARANDO: aguarda votos; sem decisão durável (ainda pode abortar sozinho),ATIVO: recebeu PREPARE; ainda não votou (ainda pode abortar sozinho),ATIVO: recebeu PREPARE; ainda não votou (ainda pode abortar sozinho)
+2,P1 e P2 persistem PREPARED e votam SIM,AGUARDANDO DECISÃO: recebeu dois SIM; decisão ainda não persistida,PREPARADO: estado durável; recursos retidos; não pode mais decidir sozinho,PREPARADO: estado durável; recursos retidos; não pode mais decidir sozinho
+3,C persiste decisao COMMIT,COMMIT DURÁVEL: ponto de decisão da transação; falta notificar,PREPARADO: ainda não sabe da decisão,PREPARADO: ainda não sabe da decisão
+4,P1 recebe COMMIT e confirma,COMMIT DURÁVEL: P1 confirmou; aguarda P2,CONFIRMADO: efeito visível; recursos liberados,PREPARADO: ainda não sabe da decisão
+5,C falha antes de enviar decisao a P2,INDISPONÍVEL: decisão COMMIT gravada no log; inacessível até recuperar,CONFIRMADO,PREPARADO E INCERTO: aguarda; recursos continuam retidos
+6,P2 nao alcanca C nem recebe informacao de P1,INDISPONÍVEL,CONFIRMADO (sem comunicação com P2),BLOQUEADO: não pode confirmar nem abortar; mantém recursos até obter a decisão

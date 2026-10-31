@@ -16,14 +16,12 @@ def movidas(before, after):
     return sum(1 for k in before if before[k] != after[k])
 
 def proxima(estado):
-    # TODO_ALUNO T3 E3: retorna reservar, pagar, confirmar, liberar ou fim.
-    raise NotImplementedError('TODO_ALUNO proxima')
+    return {'PENDENTE':'reservar','RESERVADO':'pagar','PAGAMENTO_CONFIRMADO':'confirmar',
+            'COMPENSACAO_PENDENTE':'liberar','CONFIRMADO':'fim','CANCELADO':'fim'}[estado]
 
 def apos_pagamento(resultado):
-    # TODO_ALUNO T3 E3: resultado aprovado ou rejeitado conhecido.
-    raise NotImplementedError('TODO_ALUNO apos_pagamento')
+    return {'aprovado':'PAGAMENTO_CONFIRMADO','rejeitado':'COMPENSACAO_PENDENTE'}[resultado]
 
 def liberar_sql():
-    # TODO_ALUNO T3 E3: transição condicional de ATIVA para LIBERADA.
-    # Retorne SQL com placeholder %s e RETURNING op.
-    raise NotImplementedError('TODO_ALUNO liberar_sql')
+    return "UPDATE reserva SET estado='LIBERADA' WHERE op=%s AND estado='ATIVA' RETURNING op"
+

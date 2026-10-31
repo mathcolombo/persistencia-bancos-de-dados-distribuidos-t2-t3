@@ -1,0 +1,4 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT * FROM registro_recuperacao;
+1|BASE|2026-10-31 22:46:20.266412+00
+
+[exit=0]

@@ -1,0 +1,14 @@
+$ /usr/bin/python -m unittest discover -s tests -p test_unit.py -v
+test_add_only_moves_to_new_node (test_unit.PureTests.test_add_only_moves_to_new_node) ... ok
+test_hash_vector (test_unit.PureTests.test_hash_vector) ... ok
+test_movement_counts_physical_node (test_unit.PureTests.test_movement_counts_physical_node) ... ok
+test_range (test_unit.PureTests.test_range) ... ok
+test_ring_boundary (test_unit.PureTests.test_ring_boundary) ... ok
+test_saga_paths (test_unit.PureTests.test_saga_paths) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.006s
+
+OK
+
+[exit=0]

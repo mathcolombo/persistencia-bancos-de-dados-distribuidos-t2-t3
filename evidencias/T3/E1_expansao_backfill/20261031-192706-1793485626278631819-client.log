@@ -1,0 +1,9 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py backfill 2
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-5ce25f92d273 Creating 
+ Container horizonte-lab-tools-run-5ce25f92d273 Created 
+{"utc": "2026-10-31T22:27:06.759622+00:00", "limite_inicial": 0, "limite_final": 1021, "linhas": 25, "checkpoint": 1021}
+{"utc": "2026-10-31T22:27:06.770404+00:00", "limite_inicial": 1021, "limite_final": 1046, "linhas": 25, "checkpoint": 1046}
+
+[exit=0]

@@ -1,0 +1,14 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py backfill 100
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-b48bdd56ef8f Creating 
+ Container horizonte-lab-tools-run-b48bdd56ef8f Created 
+{"utc": "2026-10-31T22:27:31.143334+00:00", "limite_inicial": 1046, "limite_final": 1071, "linhas": 25, "checkpoint": 1071}
+{"utc": "2026-10-31T22:27:31.153971+00:00", "limite_inicial": 1071, "limite_final": 1096, "linhas": 25, "checkpoint": 1096}
+{"utc": "2026-10-31T22:27:31.165156+00:00", "limite_inicial": 1096, "limite_final": 1121, "linhas": 25, "checkpoint": 1121}
+{"utc": "2026-10-31T22:27:31.177583+00:00", "limite_inicial": 1121, "limite_final": 1146, "linhas": 25, "checkpoint": 1146}
+{"utc": "2026-10-31T22:27:31.191843+00:00", "limite_inicial": 1146, "limite_final": 1171, "linhas": 25, "checkpoint": 1171}
+{"utc": "2026-10-31T22:27:31.205505+00:00", "limite_inicial": 1171, "limite_final": 1196, "linhas": 25, "checkpoint": 1196}
+{"utc": "2026-10-31T22:27:31.220327+00:00", "limite_inicial": 1196, "limite_final": 1197, "linhas": 1, "checkpoint": 1197}
+
+[exit=0]

@@ -1,0 +1,17 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T saga psql -X -v ON_ERROR_STOP=1 -U postgres -d pedidos -At -c SELECT op,estado,instante FROM evento WHERE op LIKE 't3_%' ORDER BY op,id;
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mt3_s1|RESERVADO|2026-10-31 22:34:26.402128+00
+t3_s1|PAGAMENTO_CONFIRMADO|2026-10-31 22:34:26.432721+00
+t3_s1|CONFIRMADO|2026-10-31 22:34:26.435728+00
+t3_s2|RESERVADO|2026-10-31 22:34:49.083828+00
+t3_s2|COMPENSACAO_PENDENTE|2026-10-31 22:34:49.102094+00
+t3_s2|CANCELADO|2026-10-31 22:34:49.123511+00
+t3_s4|RESERVADO|2026-10-31 22:35:59.0946+00
+t3_s4|COMPENSACAO_PENDENTE|2026-10-31 22:35:59.111467+00
+t3_s4|CANCELADO|2026-10-31 22:35:59.131609+00
+t3_s5|RESERVADO|2026-10-31 22:36:32.002837+00
+t3_s5|COMPENSACAO_PENDENTE|2026-10-31 22:36:32.020341+00
+t3_s5|CANCELADO|2026-10-31 22:36:45.707659+00
+
+[exit=0]

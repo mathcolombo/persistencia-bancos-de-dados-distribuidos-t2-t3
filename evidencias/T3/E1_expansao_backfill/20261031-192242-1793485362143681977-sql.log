@@ -1,0 +1,7 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T migration psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT id,contato_email FROM cliente WHERE id IN (18,42) ORDER BY id;
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m18|bruno@exemplo.test
+42|ana@exemplo.test
+
+[exit=0]

@@ -1,0 +1,4 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT count(*) FROM registro_recuperacao;
+0
+
+[exit=0]

@@ -1,0 +1,4 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT archived_count, last_archived_wal, failed_count FROM pg_stat_archiver;
+4|000000010000000000000003.00000028.backup|0
+
+[exit=0]

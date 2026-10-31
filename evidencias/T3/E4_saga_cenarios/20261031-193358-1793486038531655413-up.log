@@ -1,0 +1,13 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml up -d --wait --wait-timeout 120 saga
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Volume horizonte-lab_saga_data Creating 
+ Volume horizonte-lab_saga_data Created 
+ Container horizonte-lab-saga-1 Creating 
+ Container horizonte-lab-saga-1 Created 
+ Container horizonte-lab-saga-1 Starting 
+ Container horizonte-lab-saga-1 Started 
+ Container horizonte-lab-saga-1 Waiting 
+ Container horizonte-lab-saga-1 Healthy 
+
+[exit=0]

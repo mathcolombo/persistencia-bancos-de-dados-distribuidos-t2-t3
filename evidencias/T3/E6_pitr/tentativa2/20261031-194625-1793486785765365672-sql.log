@@ -1,0 +1,4 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT current_setting('wal_level'), current_setting('archive_mode'), current_setting('archive_command');
+replica|on|bash /lab/archive.sh %p %f
+
+[exit=0]

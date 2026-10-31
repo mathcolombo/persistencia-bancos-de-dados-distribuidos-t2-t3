@@ -1,0 +1,24 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml ps -a
+NAME                          IMAGE                                                                                                COMMAND                  SERVICE       CREATED          STATUS          PORTS
+horizonte-lab-destination-1   docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650   "postgres -c archive…"   destination   48 seconds ago   Up 48 seconds   5432/tcp
+horizonte-lab-migration-1     docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650   "postgres"               migration     26 minutes ago   Up 26 minutes   5432/tcp
+horizonte-lab-origin-1        docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650   "postgres -c wal_lev…"   origin        2 minutes ago    Up 2 minutes    5432/tcp
+horizonte-lab-primary-1       docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650   "postgres -c wal_lev…"   primary       2 hours ago      Up 2 hours      5432/tcp
+horizonte-lab-saga-1          docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650   "postgres"               saga          14 minutes ago   Up 14 minutes   5432/tcp
+horizonte-lab-standby-1       docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650   ""                       standby       2 hours ago      Up 2 hours      5432/tcp
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml images
+CONTAINER                     REPOSITORY          TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
+horizonte-lab-destination-1   postgres            <none>              linux/amd64         8d76d8de17e8        448MB               6 weeks ago
+horizonte-lab-migration-1     postgres            <none>              linux/amd64         8d76d8de17e8        448MB               6 weeks ago
+horizonte-lab-origin-1        postgres            <none>              linux/amd64         8d76d8de17e8        448MB               6 weeks ago
+horizonte-lab-primary-1       postgres            <none>              linux/amd64         8d76d8de17e8        448MB               6 weeks ago
+horizonte-lab-saga-1          postgres            <none>              linux/amd64         8d76d8de17e8        448MB               6 weeks ago
+horizonte-lab-standby-1       postgres            <none>              linux/amd64         8d76d8de17e8        448MB               6 weeks ago
+
+[exit=0]
+$ docker image inspect postgres:18.6-bookworm@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650 --format {{json .RepoDigests}}
+["docker.io/library/postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650","docker.io/library/postgres@sha256:9e73daeb439141c2b11eea2463f5f1a3b269fd90d897b41cddb7cb440f21aa5d"]
+
+[exit=0]

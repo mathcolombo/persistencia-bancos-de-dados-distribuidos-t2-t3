@@ -1,0 +1,20 @@
+{
+  "execucao": "lab_1793486343033978164",
+  "backup_segundos": 0.8428805779985851,
+  "base_fim": "2026-10-31T22:39:03.033990+00:00",
+  "operacoes": [
+    {
+      "id": 2,
+      "utc": "2026-10-31T22:40:26.704722+00:00",
+      "mono": 31107.794045113
+    },
+    {
+      "id": 3,
+      "utc": "2026-10-31T22:40:27.241931+00:00",
+      "mono": 31108.331263273
+    }
+  ],
+  "lsn": "\u001b[4m>>>> Executing external compose provider \"/usr/local/bin/docker-compose\". Please see podman-compose(1) for how to disable this message. <<<<\n\n\u001b[0m0/4055388",
+  "incidente_utc": "2026-10-31T22:40:27.424830+00:00",
+  "incidente_mono": 31108.514163265
+}

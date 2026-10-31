@@ -1,0 +1,67 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py migration v2 60
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-af18f2fa95af Creating 
+ Container horizonte-lab-tools-run-af18f2fa95af Created 
+{"utc": "2026-10-31T22:26:44.799181+00:00", "cliente": "v2", "iteracao": 0, "valor": null, "duracao_ms": 183.19579399758368}
+{"utc": "2026-10-31T22:26:45.828083+00:00", "cliente": "v2", "iteracao": 1, "valor": "ana.1@exemplo.test", "duracao_ms": 28.70649399847025}
+{"utc": "2026-10-31T22:26:46.856557+00:00", "cliente": "v2", "iteracao": 2, "valor": "ana.2@exemplo.test", "duracao_ms": 27.92778000002727}
+{"utc": "2026-10-31T22:26:47.885201+00:00", "cliente": "v2", "iteracao": 3, "valor": "ana.3@exemplo.test", "duracao_ms": 28.18576500067138}
+{"utc": "2026-10-31T22:26:48.912221+00:00", "cliente": "v2", "iteracao": 4, "valor": "ana.4@exemplo.test", "duracao_ms": 26.74763400136726}
+{"utc": "2026-10-31T22:26:49.941755+00:00", "cliente": "v2", "iteracao": 5, "valor": null, "duracao_ms": 29.137459998310078}
+{"utc": "2026-10-31T22:26:50.968867+00:00", "cliente": "v2", "iteracao": 6, "valor": "ana.6@exemplo.test", "duracao_ms": 26.884872000664473}
+{"utc": "2026-10-31T22:26:51.995768+00:00", "cliente": "v2", "iteracao": 7, "valor": "ana.7@exemplo.test", "duracao_ms": 26.600927998515544}
+{"utc": "2026-10-31T22:26:53.025869+00:00", "cliente": "v2", "iteracao": 8, "valor": "ana.8@exemplo.test", "duracao_ms": 29.74072899814928}
+{"utc": "2026-10-31T22:26:54.047514+00:00", "cliente": "v2", "iteracao": 9, "valor": "ana.9@exemplo.test", "duracao_ms": 21.366135999414837}
+{"utc": "2026-10-31T22:26:55.061146+00:00", "cliente": "v2", "iteracao": 10, "valor": null, "duracao_ms": 13.468837998516392}
+{"utc": "2026-10-31T22:26:56.086326+00:00", "cliente": "v2", "iteracao": 11, "valor": "ana.11@exemplo.test", "duracao_ms": 24.993297996843467}
+{"utc": "2026-10-31T22:26:57.112778+00:00", "cliente": "v2", "iteracao": 12, "valor": "ana.12@exemplo.test", "duracao_ms": 26.108803998795338}
+{"utc": "2026-10-31T22:26:58.137870+00:00", "cliente": "v2", "iteracao": 13, "valor": "ana.13@exemplo.test", "duracao_ms": 24.839759000315098}
+{"utc": "2026-10-31T22:26:59.157383+00:00", "cliente": "v2", "iteracao": 14, "valor": "ana.14@exemplo.test", "duracao_ms": 19.273121000878746}
+{"utc": "2026-10-31T22:27:00.175865+00:00", "cliente": "v2", "iteracao": 15, "valor": null, "duracao_ms": 18.302748998394236}
+{"utc": "2026-10-31T22:27:01.204836+00:00", "cliente": "v2", "iteracao": 16, "valor": "ana.16@exemplo.test", "duracao_ms": 28.56477700333926}
+{"utc": "2026-10-31T22:27:02.232786+00:00", "cliente": "v2", "iteracao": 17, "valor": "ana.17@exemplo.test", "duracao_ms": 27.61631500106887}
+{"utc": "2026-10-31T22:27:03.261670+00:00", "cliente": "v2", "iteracao": 18, "valor": "ana.18@exemplo.test", "duracao_ms": 28.597988002729835}
+{"utc": "2026-10-31T22:27:04.283409+00:00", "cliente": "v2", "iteracao": 19, "valor": "ana.19@exemplo.test", "duracao_ms": 21.427278999908594}
+{"utc": "2026-10-31T22:27:05.300294+00:00", "cliente": "v2", "iteracao": 20, "valor": null, "duracao_ms": 16.698122999514453}
+{"utc": "2026-10-31T22:27:06.312904+00:00", "cliente": "v2", "iteracao": 21, "valor": "ana.21@exemplo.test", "duracao_ms": 12.41070199830574}
+{"utc": "2026-10-31T22:27:07.331111+00:00", "cliente": "v2", "iteracao": 22, "valor": "ana.22@exemplo.test", "duracao_ms": 18.012020002061035}
+{"utc": "2026-10-31T22:27:08.356991+00:00", "cliente": "v2", "iteracao": 23, "valor": "ana.23@exemplo.test", "duracao_ms": 25.673444997664774}
+{"utc": "2026-10-31T22:27:09.380526+00:00", "cliente": "v2", "iteracao": 24, "valor": "ana.24@exemplo.test", "duracao_ms": 23.29528699920047}
+{"utc": "2026-10-31T22:27:10.408982+00:00", "cliente": "v2", "iteracao": 25, "valor": null, "duracao_ms": 28.222508997714613}
+{"utc": "2026-10-31T22:27:11.431881+00:00", "cliente": "v2", "iteracao": 26, "valor": "ana.26@exemplo.test", "duracao_ms": 22.648509999271482}
+{"utc": "2026-10-31T22:27:12.451656+00:00", "cliente": "v2", "iteracao": 27, "valor": "ana.27@exemplo.test", "duracao_ms": 19.593075001466786}
+{"utc": "2026-10-31T22:27:13.479288+00:00", "cliente": "v2", "iteracao": 28, "valor": "ana.28@exemplo.test", "duracao_ms": 27.362155000446364}
+{"utc": "2026-10-31T22:27:14.506037+00:00", "cliente": "v2", "iteracao": 29, "valor": "ana.29@exemplo.test", "duracao_ms": 26.428547000250546}
+{"utc": "2026-10-31T22:27:15.520658+00:00", "cliente": "v2", "iteracao": 30, "valor": null, "duracao_ms": 14.338410997879691}
+{"utc": "2026-10-31T22:27:16.549062+00:00", "cliente": "v2", "iteracao": 31, "valor": "ana.31@exemplo.test", "duracao_ms": 28.20993200293742}
+{"utc": "2026-10-31T22:27:17.574960+00:00", "cliente": "v2", "iteracao": 32, "valor": "ana.32@exemplo.test", "duracao_ms": 25.65684000001056}
+{"utc": "2026-10-31T22:27:18.598458+00:00", "cliente": "v2", "iteracao": 33, "valor": "ana.33@exemplo.test", "duracao_ms": 23.294967999390792}
+{"utc": "2026-10-31T22:27:19.626218+00:00", "cliente": "v2", "iteracao": 34, "valor": "ana.34@exemplo.test", "duracao_ms": 27.32320900031482}
+{"utc": "2026-10-31T22:27:20.656940+00:00", "cliente": "v2", "iteracao": 35, "valor": null, "duracao_ms": 30.388772996957414}
+{"utc": "2026-10-31T22:27:21.673879+00:00", "cliente": "v2", "iteracao": 36, "valor": "ana.36@exemplo.test", "duracao_ms": 16.668524000124307}
+{"utc": "2026-10-31T22:27:22.690618+00:00", "cliente": "v2", "iteracao": 37, "valor": "ana.37@exemplo.test", "duracao_ms": 16.565552999963984}
+{"utc": "2026-10-31T22:27:23.715605+00:00", "cliente": "v2", "iteracao": 38, "valor": "ana.38@exemplo.test", "duracao_ms": 24.812449999444652}
+{"utc": "2026-10-31T22:27:24.739858+00:00", "cliente": "v2", "iteracao": 39, "valor": "ana.39@exemplo.test", "duracao_ms": 23.914168999908725}
+{"utc": "2026-10-31T22:27:25.769765+00:00", "cliente": "v2", "iteracao": 40, "valor": null, "duracao_ms": 29.6143289997417}
+{"utc": "2026-10-31T22:27:26.787969+00:00", "cliente": "v2", "iteracao": 41, "valor": "ana.41@exemplo.test", "duracao_ms": 18.00353399812593}
+{"utc": "2026-10-31T22:27:27.821530+00:00", "cliente": "v2", "iteracao": 42, "valor": "ana.42@exemplo.test", "duracao_ms": 33.24954999698093}
+{"utc": "2026-10-31T22:27:28.847952+00:00", "cliente": "v2", "iteracao": 43, "valor": "ana.43@exemplo.test", "duracao_ms": 26.173788999585668}
+{"utc": "2026-10-31T22:27:29.874987+00:00", "cliente": "v2", "iteracao": 44, "valor": "ana.44@exemplo.test", "duracao_ms": 26.654519002477173}
+{"utc": "2026-10-31T22:27:30.896407+00:00", "cliente": "v2", "iteracao": 45, "valor": null, "duracao_ms": 21.23434500026633}
+{"utc": "2026-10-31T22:27:31.923795+00:00", "cliente": "v2", "iteracao": 46, "valor": "ana.46@exemplo.test", "duracao_ms": 26.906717001111247}
+{"utc": "2026-10-31T22:27:32.951996+00:00", "cliente": "v2", "iteracao": 47, "valor": "ana.47@exemplo.test", "duracao_ms": 27.95419399990351}
+{"utc": "2026-10-31T22:27:33.977521+00:00", "cliente": "v2", "iteracao": 48, "valor": "ana.48@exemplo.test", "duracao_ms": 25.205248999554897}
+{"utc": "2026-10-31T22:27:35.001346+00:00", "cliente": "v2", "iteracao": 49, "valor": "ana.49@exemplo.test", "duracao_ms": 23.560028999781935}
+{"utc": "2026-10-31T22:27:36.029848+00:00", "cliente": "v2", "iteracao": 50, "valor": null, "duracao_ms": 28.256080997380195}
+{"utc": "2026-10-31T22:27:37.058511+00:00", "cliente": "v2", "iteracao": 51, "valor": "ana.51@exemplo.test", "duracao_ms": 28.258645001187688}
+{"utc": "2026-10-31T22:27:38.090125+00:00", "cliente": "v2", "iteracao": 52, "valor": "ana.52@exemplo.test", "duracao_ms": 31.34383200085722}
+{"utc": "2026-10-31T22:27:39.116715+00:00", "cliente": "v2", "iteracao": 53, "valor": "ana.53@exemplo.test", "duracao_ms": 26.304290997359203}
+{"utc": "2026-10-31T22:27:40.137319+00:00", "cliente": "v2", "iteracao": 54, "valor": "ana.54@exemplo.test", "duracao_ms": 20.375452997541288}
+{"utc": "2026-10-31T22:27:41.166110+00:00", "cliente": "v2", "iteracao": 55, "valor": null, "duracao_ms": 28.59797100245487}
+{"utc": "2026-10-31T22:27:42.191333+00:00", "cliente": "v2", "iteracao": 56, "valor": "ana.56@exemplo.test", "duracao_ms": 24.87361300154589}
+{"utc": "2026-10-31T22:27:43.218128+00:00", "cliente": "v2", "iteracao": 57, "valor": "ana.57@exemplo.test", "duracao_ms": 26.505795001867227}
+{"utc": "2026-10-31T22:27:44.246038+00:00", "cliente": "v2", "iteracao": 58, "valor": "ana.58@exemplo.test", "duracao_ms": 27.49851599946851}
+{"utc": "2026-10-31T22:27:45.263500+00:00", "cliente": "v2", "iteracao": 59, "valor": "ana.59@exemplo.test", "duracao_ms": 17.25353500296478}
+
+[exit=0]

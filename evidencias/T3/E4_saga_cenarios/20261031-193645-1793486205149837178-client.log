@@ -1,0 +1,9 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py saga t3_s5 rejeitado
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-ddef9ae3ee5b Creating 
+ Container horizonte-lab-tools-run-ddef9ae3ee5b Created 
+{"utc": "2026-10-31T22:36:45.709767+00:00", "op": "t3_s5", "estado": "CANCELADO"}
+{"utc": "2026-10-31T22:36:45.710185+00:00", "op": "t3_s5", "estado": "CANCELADO"}
+
+[exit=0]

@@ -1,0 +1,88 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml stop fault-destination
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps fault-prep
+ Volume horizonte-lab_fault_destination_data Creating 
+ Volume horizonte-lab_fault_destination_data Created 
+ Container horizonte-lab-fault-prep-run-d7cedc92a565 Creating 
+ Container horizonte-lab-fault-prep-run-d7cedc92a565 Created 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml up -d fault-destination
+ Volume horizonte-lab_empty_archive_data Creating 
+ Volume horizonte-lab_empty_archive_data Created 
+ Container horizonte-lab-fault-destination-1 Creating 
+ Container horizonte-lab-fault-destination-1 Created 
+ Container horizonte-lab-fault-destination-1 Starting 
+ Container horizonte-lab-fault-destination-1 Started 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml logs --no-color fault-destination
+fault-destination-1  | 
+fault-destination-1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+fault-destination-1  | 
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.191 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+fault-destination-1  | 2026-10-31 22:48:58.199 UTC [28] LOG:  database system was interrupted; last known up at 2026-10-31 22:46:20 UTC
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml logs --no-color fault-destination
+fault-destination-1  | 
+fault-destination-1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+fault-destination-1  | 
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.191 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+fault-destination-1  | 2026-10-31 22:48:58.199 UTC [28] LOG:  database system was interrupted; last known up at 2026-10-31 22:46:20 UTC
+fault-destination-1  | 2026-10-31 22:48:58.229 UTC [30] FATAL:  the database system is starting up
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml logs --no-color fault-destination
+fault-destination-1  | 
+fault-destination-1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+fault-destination-1  | 
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.191 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+fault-destination-1  | 2026-10-31 22:48:58.199 UTC [28] LOG:  database system was interrupted; last known up at 2026-10-31 22:46:20 UTC
+fault-destination-1  | 2026-10-31 22:48:58.229 UTC [30] FATAL:  the database system is starting up
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml logs --no-color fault-destination
+fault-destination-1  | 
+fault-destination-1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+fault-destination-1  | 
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.188 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+fault-destination-1  | 2026-10-31 22:48:58.191 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+fault-destination-1  | 2026-10-31 22:48:58.199 UTC [28] LOG:  database system was interrupted; last known up at 2026-10-31 22:46:20 UTC
+fault-destination-1  | 2026-10-31 22:48:58.229 UTC [30] FATAL:  the database system is starting up
+fault-destination-1  | 2026-10-31 22:49:00.462 UTC [33] FATAL:  the database system is starting up
+fault-destination-1  | cp: cannot stat '/archive/00000002.history': No such file or directory
+fault-destination-1  | 2026-10-31 22:49:00.792 UTC [28] LOG:  starting backup recovery with redo LSN 0/3000028, checkpoint LSN 0/3000080, on timeline ID 1
+fault-destination-1  | cp: cannot stat '/archive/000000010000000000000003': No such file or directory
+fault-destination-1  | 2026-10-31 22:49:00.795 UTC [28] LOG:  starting point-in-time recovery to "lab_1793486783654013149"
+fault-destination-1  | 2026-10-31 22:49:00.802 UTC [28] LOG:  redo starts at 0/3000028
+fault-destination-1  | cp: cannot stat '/archive/000000010000000000000004': No such file or directory
+fault-destination-1  | 2026-10-31 22:49:00.807 UTC [28] LOG:  completed backup recovery with redo LSN 0/3000028 and end LSN 0/3000120
+fault-destination-1  | 2026-10-31 22:49:00.807 UTC [28] LOG:  consistent recovery state reached at 0/3000120
+fault-destination-1  | 2026-10-31 22:49:00.807 UTC [1] LOG:  database system is ready to accept read-only connections
+fault-destination-1  | cp: cannot stat '/archive/000000010000000000000004': No such file or directory
+fault-destination-1  | 2026-10-31 22:49:00.810 UTC [28] LOG:  redo done at 0/3000120 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+fault-destination-1  | 2026-10-31 22:49:00.810 UTC [28] FATAL:  recovery ended before configured recovery target was reached
+fault-destination-1  | 2026-10-31 22:49:00.813 UTC [1] LOG:  startup process (PID 28) exited with exit code 1
+fault-destination-1  | 2026-10-31 22:49:00.813 UTC [1] LOG:  terminating any other active server processes
+fault-destination-1  | 2026-10-31 22:49:00.814 UTC [1] LOG:  shutting down due to startup process failure
+fault-destination-1  | 2026-10-31 22:49:00.818 UTC [1] LOG:  database system is shut down
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml stop fault-destination
+ Container horizonte-lab-fault-destination-1 Stopping 
+ Container horizonte-lab-fault-destination-1 Stopped 
+
+[exit=0]

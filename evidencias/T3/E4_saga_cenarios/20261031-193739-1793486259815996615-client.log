@@ -1,0 +1,8 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py snapshot t3_s1
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-1c57e88a1572 Creating 
+ Container horizonte-lab-tools-run-1c57e88a1572 Created 
+{"utc": "2026-10-31T22:37:40.465609+00:00", "op": "t3_s1", "estado": "CONFIRMADO", "estoque": 4, "reserva": "ATIVA", "cobrancas": 1}
+
+[exit=0]

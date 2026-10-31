@@ -1,0 +1,8 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T migration psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT versao,min(instante),max(instante),count(*),max(duracao_ms) FROM lab_ops GROUP BY versao ORDER BY min(instante);
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mv1|2026-10-31 22:23:04.989214+00|2026-10-31 22:30:42.279546+00|63|405.574251999496
+v2|2026-10-31 22:26:44.796917+00|2026-10-31 22:31:06.025425+00|130|289.352889001748
+final|2026-10-31 22:31:46.532463+00|2026-10-31 22:31:47.552849+00|2|241.226791000372
+
+[exit=0]

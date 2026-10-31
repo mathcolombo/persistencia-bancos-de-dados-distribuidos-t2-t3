@@ -1,0 +1,85 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T -u postgres origin bash -c printf "%s\n" "$1" > /backup/target.txt _ lab_1793486783654013149
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml stop destination
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps restore-prep
+ Volume horizonte-lab_destination_data Creating 
+ Volume horizonte-lab_destination_data Created 
+ Container horizonte-lab-restore-prep-run-8b931cf52d77 Creating 
+ Container horizonte-lab-restore-prep-run-8b931cf52d77 Created 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml up -d destination
+ Container horizonte-lab-destination-1 Creating 
+ Container horizonte-lab-destination-1 Created 
+ Container horizonte-lab-destination-1 Starting 
+ Container horizonte-lab-destination-1 Started 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery()
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  the database system is starting up
+Error: executing /usr/local/bin/docker-compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery(): exit status 2
+
+[exit=2]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery()
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  the database system is starting up
+Error: executing /usr/local/bin/docker-compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery(): exit status 2
+
+[exit=2]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery()
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  the database system is starting up
+Error: executing /usr/local/bin/docker-compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery(): exit status 2
+
+[exit=2]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -U postgres -d horizonte -At -c SELECT pg_is_in_recovery()
+f
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T destination psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT id FROM registro_recuperacao ORDER BY id
+1
+2
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT count(*) FROM registro_recuperacao
+0
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml logs --no-color destination
+destination-1  | 
+destination-1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+destination-1  | 
+destination-1  | 2026-10-31 22:47:52.612 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+destination-1  | 2026-10-31 22:47:52.612 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+destination-1  | 2026-10-31 22:47:52.612 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+destination-1  | 2026-10-31 22:47:52.617 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+destination-1  | 2026-10-31 22:47:52.623 UTC [27] LOG:  database system was interrupted; last known up at 2026-10-31 22:46:20 UTC
+destination-1  | 2026-10-31 22:47:52.656 UTC [30] FATAL:  the database system is starting up
+destination-1  | 2026-10-31 22:47:52.716 UTC [32] FATAL:  the database system is starting up
+destination-1  | 2026-10-31 22:47:53.936 UTC [34] FATAL:  the database system is starting up
+destination-1  | 2026-10-31 22:47:55.123 UTC [36] FATAL:  the database system is starting up
+destination-1  | 2026-10-31 22:47:55.198 UTC [39] FATAL:  the database system is starting up
+destination-1  | cp: cannot stat '/archive/00000002.history': No such file or directory
+destination-1  | 2026-10-31 22:47:55.275 UTC [27] LOG:  starting backup recovery with redo LSN 0/3000028, checkpoint LSN 0/3000080, on timeline ID 1
+destination-1  | 2026-10-31 22:47:55.279 UTC [27] LOG:  restored log file "000000010000000000000003" from archive
+destination-1  | 2026-10-31 22:47:55.286 UTC [27] LOG:  starting point-in-time recovery to "lab_1793486783654013149"
+destination-1  | 2026-10-31 22:47:55.294 UTC [27] LOG:  redo starts at 0/3000028
+destination-1  | 2026-10-31 22:47:55.299 UTC [27] LOG:  restored log file "000000010000000000000004" from archive
+destination-1  | 2026-10-31 22:47:55.309 UTC [27] LOG:  completed backup recovery with redo LSN 0/3000028 and end LSN 0/3000120
+destination-1  | 2026-10-31 22:47:55.309 UTC [27] LOG:  consistent recovery state reached at 0/3000120
+destination-1  | 2026-10-31 22:47:55.309 UTC [1] LOG:  database system is ready to accept read-only connections
+destination-1  | cp: cannot stat '/archive/000000010000000000000005': No such file or directory
+destination-1  | 2026-10-31 22:47:55.317 UTC [27] LOG:  recovery stopping at restore point "lab_1793486783654013149", time 2026-10-31 22:47:10.046009+00
+destination-1  | 2026-10-31 22:47:55.317 UTC [27] LOG:  redo done at 0/40552E8 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.02 s
+destination-1  | 2026-10-31 22:47:55.317 UTC [27] LOG:  last completed transaction was at log time 2026-10-31 22:47:09.882618+00
+destination-1  | 2026-10-31 22:47:55.321 UTC [27] LOG:  restored log file "000000010000000000000004" from archive
+destination-1  | cp: cannot stat '/archive/00000002.history': No such file or directory
+destination-1  | 2026-10-31 22:47:55.331 UTC [27] LOG:  selected new timeline ID: 2
+destination-1  | cp: cannot stat '/archive/00000001.history': No such file or directory
+destination-1  | 2026-10-31 22:47:55.363 UTC [27] LOG:  archive recovery complete
+destination-1  | 2026-10-31 22:47:55.372 UTC [25] LOG:  checkpoint starting: end-of-recovery immediate wait
+destination-1  | 2026-10-31 22:47:55.428 UTC [25] LOG:  checkpoint complete: wrote 48 buffers (0.3%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=0.004 s, sync=0.038 s, total=0.065 s; sync files=19, longest=0.003 s, average=0.002 s; distance=16724 kB, estimate=16724 kB; lsn=0/4055350, redo lsn=0/4055350
+destination-1  | 2026-10-31 22:47:55.434 UTC [1] LOG:  database system is ready to accept connections
+
+[exit=0]

@@ -1,0 +1,31 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c INSERT INTO registro_recuperacao(id,descricao) VALUES(2,'ANTES_DO_MARCADOR');
+INSERT 0 1
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT pg_create_restore_point('lab_1793486783654013149');
+0/4055350
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T -u postgres origin bash -c printf "%s\n" "$1" > /backup/target.txt _ lab_1793486783654013149
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c INSERT INTO registro_recuperacao(id,descricao) VALUES(3,'DEPOIS_DO_MARCADOR');
+INSERT 0 1
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c DELETE FROM registro_recuperacao; SELECT count(*) FROM registro_recuperacao;
+DELETE 3
+0
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT pg_walfile_name(pg_current_wal_insert_lsn());
+000000010000000000000004
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT pg_switch_wal();
+0/40554F8
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T origin test -f /archive/000000010000000000000004
+
+[exit=0]

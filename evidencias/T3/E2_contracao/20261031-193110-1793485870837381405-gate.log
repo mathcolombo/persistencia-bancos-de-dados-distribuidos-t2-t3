@@ -1,0 +1,18 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T migration psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c BEGIN; SELECT pg_advisory_xact_lock(8101);
+DO $$ DECLARE p text; n integer; r boolean; BEGIN
+ SELECT phase,window_count,returned INTO p,n,r FROM lab_gate WHERE id=1;
+ IF p<>'window' OR n<10 OR NOT r THEN RAISE EXCEPTION 'Exige retorno testado e dez ciclos completos'; END IF;
+ IF EXISTS(SELECT 1 FROM cliente WHERE email IS DISTINCT FROM contato_email) THEN RAISE EXCEPTION 'Dados divergentes'; END IF;
+END $$;
+UPDATE lab_gate SET phase='final' WHERE id=1; COMMIT;
+SELECT * FROM lab_gate;
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mBEGIN
+
+DO
+UPDATE 1
+COMMIT
+1|final|10|t
+
+[exit=0]

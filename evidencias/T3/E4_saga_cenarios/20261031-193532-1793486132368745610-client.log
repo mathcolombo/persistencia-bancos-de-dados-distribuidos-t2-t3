@@ -1,0 +1,10 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py saga t3_s4 rejeitado after-reserve
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-7362a2470cd1 Creating 
+ Container horizonte-lab-tools-run-7362a2470cd1 Created 
+{"utc": "2026-10-31T22:35:33.034363+00:00", "erro": "FALHA_INJETADA after-reserve", "classe": "RuntimeError"}
+
+Error: executing /usr/local/bin/docker-compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py saga t3_s4 rejeitado after-reserve: exit status 17
+
+[exit=17]

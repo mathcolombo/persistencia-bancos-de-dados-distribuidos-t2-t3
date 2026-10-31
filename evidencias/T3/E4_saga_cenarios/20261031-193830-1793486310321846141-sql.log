@@ -1,0 +1,9 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T saga psql -X -v ON_ERROR_STOP=1 -U postgres -d estoque -At -c SELECT e.op,e.disponivel,r.estado FROM estoque e LEFT JOIN reserva r USING(op) ORDER BY op;
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mt3_s1|4|ATIVA
+t3_s2|5|LIBERADA
+t3_s4|5|LIBERADA
+t3_s5|5|LIBERADA
+
+[exit=0]
