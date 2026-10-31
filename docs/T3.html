@@ -1,0 +1,112 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja Horizonte — Aluno</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#243442;background:#f5f7fa;margin:0}main{max-width:1050px;margin:auto;padding:32px 45px;background:white}h1,h2,h3{line-height:1.25;color:#133e50}h1{font-size:2rem}h2{margin-top:2em}nav{display:flex;flex-wrap:wrap;gap:18px;padding:14px;background:#eaf0f5}a{color:#005e8c}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f0f4f7;border-radius:6px;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ccd6df;padding:9px;text-align:left;vertical-align:top}th{background:#eaf0f5}@media(max-width:650px){main{padding:20px}table{display:block;overflow:auto}}@media print{body{background:white}main{padding:0}nav{display:none}}</style><main><nav><a href="../LEIA_PRIMEIRO.html">Início</a><a href="../VERSAO.html">Edição</a><a href="../docs/T1.html">T1</a><a href="../docs/T2.html">T2</a><a href="../docs/T3.html">T3</a><a href="../docs/PROBLEMAS.html">Problemas</a><a href="../docs/VALIDACAO.html">Validação</a></nav><h1>T3 — Evolução, transações e recuperação</h1>
+<p>Use perfis independentes. A migração usa cópia de clientes; a Saga possui massas por cenário; PITR possui origem e destino separados. Preserve T1 e T2.</p>
+<h2>Parte A — Migração com Flyway</h2>
+<h3>A1. Antes da expansão</h3>
+<pre><code class="language-text">python lab.py stop
+python lab.py up migration
+python lab.py client python migration v1 2
+</code></pre>
+<p>Troque <code>python</code> por <code>java</code> no argumento de linguagem para JDBC. A base começa com 200 clientes: 18, 42 e 198 registros auxiliares (1000 a 1197). O exercício que insere 55 adiciona uma linha, totalizando 201; não é um erro de carga.</p>
+<p>No pacote do aluno, complete <code>migrations/expand/V1__expand.sql</code> <strong>antes de aplicá-la</strong>. A função de trigger deve copiar a autoridade <code>contato_email</code> para <code>email</code>, inclusive NULL, na mesma transação. Remova o marcador TODO_ALUNO depois de implementar. O comando de expansão recusa um arquivo ainda marcado como incompleto.</p>
+<pre><code class="language-text">python lab.py migrate expand
+python lab.py sql migration -q &quot;UPDATE cliente SET contato_email='ana.nova@exemplo.test' WHERE id=42; INSERT INTO cliente VALUES(55,'Nulo',NULL,NULL); SELECT id,contato_email,email FROM cliente WHERE id IN (42,55);&quot;
+</code></pre>
+<p>As duas colunas devem coincidir para 42 e ser nulas para 55. Flyway registra baseline explícito versão 0 para a base pré-existente e aplica V1. Não executar <code>clean</code>, não editar uma migração já aplicada. Se uma alteração no código do exercício exigir novo ensaio, salve evidências e reinicie <strong>somente</strong> o perfil migration.</p>
+<h3>A2. Clientes concorrentes e backfill</h3>
+<p>Abra três terminais na raiz do kit. No terminal 1:</p>
+<pre><code class="language-text">python lab.py client python migration v1 30
+</code></pre>
+<p>No terminal 2:</p>
+<pre><code class="language-text">python lab.py client python migration v2 30
+</code></pre>
+<p>No terminal 3, enquanto os anteriores rodam:</p>
+<pre><code class="language-text">python lab.py client python backfill 2
+python lab.py sql migration -q &quot;SELECT * FROM lab_checkpoint;&quot;
+python lab.py client python backfill 100
+python lab.py sql migration -q &quot;SELECT count(*) FROM cliente WHERE email IS DISTINCT FROM contato_email;&quot;
+</code></pre>
+<p>Java aceita os mesmos argumentos. Cada lote atualiza no máximo 25 linhas e grava seu checkpoint na <strong>mesma transação</strong>. O primeiro comando encerra após dois lotes; o segundo retoma. O limite 100 é um máximo de lotes, não quantidade de linhas.</p>
+<p>Para demonstrar repetição de lote, antes de terminar a convivência, grave o checkpoint observado, execute <code>UPDATE lab_checkpoint SET last_id=0 WHERE id=1;</code> e rode <code>backfill 1</code>, seguido de <code>backfill 100</code>. A cópia usa a coluna antiga autoritativa no próprio UPDATE, sem guardar em memória uma versão antiga do valor. A contagem final de divergências deve ser zero. Registre o efeito de repetir esse lote.</p>
+<p>Espere os dois clientes terminarem. Eles registram leituras/escritas e duração no log; <code>lab_ops</code> registra as operações bem-sucedidas. Erros interrompem o cliente com saída diferente de zero e ficam no log, não são contados como sucesso. Consolide tentativas, sucessos e erros a partir dos dois registros.</p>
+<h3>A3. Janela de retorno e contração</h3>
+<pre><code class="language-text">python lab.py gate retirar
+python lab.py gate retorno
+python lab.py client python migration v1 1
+python lab.py gate janela
+python lab.py client python migration v2 10
+python lab.py gate liberar
+python lab.py migrate contract
+python lab.py client python migration final 2
+</code></pre>
+<p>O gate usa lock compartilhado por operação e exclusivo na mudança de fase. <code>retirar</code> impede novas operações v1 e aguarda as em andamento. <code>retorno</code> permite o teste controlado de v1; <code>janela</code> o retira novamente e zera a contagem. Dez ciclos de v2, um por segundo, preservam o formato antigo durante a janela. <code>liberar</code> exige backfill consistente e retorno demonstrado, então suspende os clientes de compatibilidade. A contração remove trigger e coluna antiga; somente depois o cliente final é admitido.</p>
+<p>Esta passagem pode introduzir espera/indisponibilidade no laboratório e <strong>não demonstra zero downtime universal</strong>. Explique por que usar uma barreira explícita simplifica o ensaio e quais mudanças seriam necessárias para requisitos de produção. Não confundir ausência de erro de DDL com ausência de bloqueios.</p>
+<pre><code class="language-text">python lab.py sql migration -q &quot;SELECT version,description,success FROM flyway_schema_history ORDER BY installed_rank;&quot;
+python lab.py sql migration -q &quot;SELECT versao,count(*),max(duracao_ms) FROM lab_ops GROUP BY versao;&quot;
+python lab.py sql migration -q &quot;SELECT column_name FROM information_schema.columns WHERE table_name='cliente' ORDER BY ordinal_position;&quot;
+</code></pre>
+<p>Em uma cópia nova do perfil, <code>python lab.py test migration --linguagem python</code> executa automaticamente o percurso para validação docente. Não substitui a interpretação do grupo.</p>
+<h2>Parte B — Saga</h2>
+<h3>B1. Completar a lógica</h3>
+<pre><code class="language-text">python lab.py stop
+python lab.py up saga
+</code></pre>
+<p>Complete <code>proxima</code>, <code>apos_pagamento</code> e <code>liberar_sql</code> na linguagem escolhida. A estrutura de persistência e chamadas já existe. Estados: PENDENTE → RESERVADO → PAGAMENTO_CONFIRMADO → CONFIRMADO; rejeição conhecida leva a COMPENSACAO_PENDENTE → CANCELADO.</p>
+<p>A liberação deve alterar reserva ATIVA para LIBERADA <strong>somente uma vez</strong>, retornando a linha realmente alterada. O serviço devolve estoque apenas quando houve transição. A transação local engloba estado e devolução. Não basta verificar um booleano em memória.</p>
+<p>Cada <code>op</code> cria uma massa de estoque isolada começando em cinco unidades para o produto 10. Assim, os cenários não consomem o saldo uns dos outros. O orquestrador usa lock por intenção para não executar simultaneamente dois avanços da mesma Saga. Cada serviço mantém sua transação própria; não há transação única atravessando os três bancos.</p>
+<h3>B2. Cenários manuais</h3>
+<pre><code class="language-text">python lab.py client python saga grupo1_s1 aprovado
+python lab.py client python snapshot grupo1_s1
+python lab.py client python saga grupo1_s2 rejeitado
+python lab.py client python snapshot grupo1_s2
+python lab.py client python liberar grupo1_s2
+python lab.py client python liberar grupo1_s2
+</code></pre>
+<p>Esperado: S1 CONFIRMADO, estoque 4, reserva ATIVA, uma cobrança. S2 e repetições: CANCELADO, estoque 5, reserva LIBERADA, zero cobranças. Trocar o modo para a mesma intenção é rejeitado.</p>
+<p>Falha após reserva, <strong>antes de registrar avanço local</strong>:</p>
+<pre><code class="language-text">python lab.py client python saga grupo1_s4 rejeitado after-reserve
+python lab.py client python saga grupo1_s4 rejeitado
+python lab.py client python snapshot grupo1_s4
+</code></pre>
+<p>Falha após compensação, antes de registrar conclusão na Saga:</p>
+<pre><code class="language-text">python lab.py client python saga grupo1_s5 rejeitado after-release
+python lab.py client python saga grupo1_s5 rejeitado
+python lab.py client python snapshot grupo1_s5
+</code></pre>
+<p>Os comandos com falha injetada terminam com código 17 e mensagem FALHA_INJETADA. É esperado. Execute a retomada sem o último argumento. O novo processo consulta o estado persistido, repete a mesma intenção e não deve duplicar o efeito. S4 e S5 terminam CANCELADO com estoque cinco.</p>
+<p>Repetição de sucesso:</p>
+<pre><code class="language-text">python lab.py client python saga grupo1_s1 aprovado
+python lab.py client python snapshot grupo1_s1
+</code></pre>
+<p>Continua com uma cobrança, uma reserva e estoque quatro. Use outros IDs em novos ensaios para não confundir histórico. Todos os comandos aceitam <code>java</code> no lugar de <code>python</code>.</p>
+<p>O teste <code>python lab.py test saga --linguagem python</code> executa S1–S6 com IDs novos e confere os quatro estados/saldos nos bancos. Timeout de pagamento e 2PC permanecem análises orientadas, em <code>docs/analises_T3.md</code>; não há transação preparada real obrigatória.</p>
+<h2>Parte C — Backup físico e PITR</h2>
+<h3>C1. Preparar backup</h3>
+<pre><code class="language-text">python lab.py stop
+python lab.py pitr backup
+</code></pre>
+<p>Cria origem exclusiva, insere id 1 e conclui <code>pg_basebackup</code> com WAL de consistência. <code>pg_verifybackup</code> verifica o backup. Um backup anterior não é sobrescrito: para novo ensaio, usar reset pitr depois de preservar evidências.</p>
+<h3>C2. Operações e incidente</h3>
+<pre><code class="language-text">python lab.py pitr incidente
+</code></pre>
+<p>O comando confirma id 2, cria um ponto nomeado, confirma id 3 e confirma a exclusão controlada. Guarda os instantes observados externamente, força troca de WAL e aguarda o segmento final aparecer no arquivo. O resultado informa um nome como <code>lab_123...</code>.</p>
+<p>No pacote do aluno, copie <strong>o nome informado</strong> para <code>exercicios/pitr.json</code>:</p>
+<pre><code class="language-json">{&quot;nome_do_ponto&quot;: &quot;lab_NOME_REAL_INFORMADO_PELO_COMANDO&quot;}
+</code></pre>
+<p>Não usar literalmente o exemplo. O pacote de referência usa <code>AUTO</code>, que seleciona o marcador do experimento atual.</p>
+<p>O relógio de RTO já começou no incidente. O tempo de editar o arquivo e iniciar o comando seguinte faz parte da recuperação operacional; não alterar timestamps para omiti-lo.</p>
+<h3>C3. Restaurar e medir</h3>
+<pre><code class="language-text">python lab.py pitr restaurar
+python lab.py pitr medir
+</code></pre>
+<p>A base é copiada para volume separado, configurada com <code>recovery_target_name</code> e <code>recovery.signal</code>; recebe somente WAL arquivado. Ao alcançar o ponto, PostgreSQL finaliza a recuperação automaticamente pela ação configurada. <strong>Não fazer promoção manual para esconder alvo não atingido.</strong></p>
+<p>Verificações: origem continua com zero linhas; destino contém ids 1 e 2, não contém id 3; log contém o marcador; destino saiu da recuperação. A ausência de 3 mostra que também se deixou de recuperar uma operação legítima posterior ao alvo.</p>
+<p>Arquivos gerados: <code>pitr-controle.json</code>, <code>pitr-operacoes.csv</code>, <code>pitr-metricas.json</code> e logs de comandos. O controle é externo às instâncias. Não reinicie o host entre etapas: os cálculos usam o mesmo relógio monotônico. Se isso ocorrer, registre o ensaio como inválido para tempo e faça outro experimento com identidade nova.</p>
+<p>RTO observado: incidente até validação final. Janela de perda observada: incidente menos a última confirmação legítima recuperada (id 2). Metas didáticas: 600 e 60 segundos. Estar fora da meta não invalida automaticamente o procedimento; exige análise. A medição não garante RPO/RTO em produção.</p>
+<h3>C4. Falta de WAL — teste docente opcional</h3>
+<p>Em ensaio próprio, depois de <code>pitr incidente</code> e antes do restore normal:</p>
+<pre><code class="language-text">python lab.py test pitr-wal-ausente
+</code></pre>
+<p>Esse teste usa <strong>outro destino e um arquivo WAL vazio</strong>, preservando o backup e o WAL originais. Só aceita como resultado esperado a mensagem de recuperação encerrada antes do alvo. Depois pode executar o restore normal; o tempo extra permanece incluído no RTO daquele ensaio. Não usar este ensaio de falha para comparar desempenho com um restore sem falha.</p>
+<p>Se o teste não observar a mensagem esperada, ele falha e exige investigação; não registra sucesso apenas porque o contêiner ficou indisponível. Os volumes auxiliares são removidos por reset pitr.</p>
+<h3>C5. DR e entrega</h3>
+<p>Preencha <code>modelos/DR.md</code>: dependências, fontes autoritativas, componentes reconstruíveis, reconciliação entre serviços, responsáveis, objetivos e validações. É uma proposta cloud-native documental, sem contratar infraestrutura. Responda às questões de WAL, réplica versus backup, 2PC e compensação do enunciado. Relatório de até oito páginas, incluindo até duas de DR.</p></main></html>

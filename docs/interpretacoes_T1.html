@@ -1,0 +1,48 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja Horizonte — Aluno</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#243442;background:#f5f7fa;margin:0}main{max-width:1050px;margin:auto;padding:32px 45px;background:white}h1,h2,h3{line-height:1.25;color:#133e50}h1{font-size:2rem}h2{margin-top:2em}nav{display:flex;flex-wrap:wrap;gap:18px;padding:14px;background:#eaf0f5}a{color:#005e8c}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f0f4f7;border-radius:6px;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ccd6df;padding:9px;text-align:left;vertical-align:top}th{background:#eaf0f5}@media(max-width:650px){main{padding:20px}table{display:block;overflow:auto}}@media print{body{background:white}main{padding:0}nav{display:none}}</style><main><nav><a href="../LEIA_PRIMEIRO.html">Início</a><a href="../VERSAO.html">Edição</a><a href="../docs/T1.html">T1</a><a href="../docs/T2.html">T2</a><a href="../docs/T3.html">T3</a><a href="../docs/PROBLEMAS.html">Problemas</a><a href="../docs/VALIDACAO.html">Validação</a></nav><h1>Exercícios de interpretação de documentos chaves e grafos</h1>
+<p>Estes exercícios não exigem servidores adicionais. Leiam os dados e a consulta, confiram o resultado fornecido e expliquem sua semântica em duas a quatro frases. Não tratem as saídas fornecidas como execução realizada pelo grupo.</p>
+<h2>T1 E5 Documento de catálogo</h2>
+<p>Considere a coleção produtos com três documentos: id 10 nome Mochila 25L atributos capacidade_l 25; id 20 nome Livro de SQL atributos paginas 240; id 30 nome Garrafa 1L atributos volume_l 1. Os demais campos não interferem na consulta.</p>
+<pre><code class="language-text">db.produtos.find(
+  {&quot;atributos.capacidade_l&quot;: {$gte: 20}},
+  {_id: 0, id: 1, nome: 1}
+).sort({id: 1})
+</code></pre>
+<p>Resultado fornecido: documento com id 10 e nome Mochila 25L. Expliquem o filtro, a projeção e por que o livro não é selecionado. Proponham um campo obrigatório e uma regra de validação para a ficha. Respondam quando prefeririam embutir dados e quando usariam uma referência ao lojista.</p>
+<h2>T1 E6 Chave valor e expiração</h2>
+<pre><code class="language-text">SET sessao:abc &quot;cliente=42&quot; EX 900
+GET sessao:abc
+</code></pre>
+<p>Premissas: SET acontece em t igual a zero; não há nova escrita nem renovação. GET em t igual a 10 segundos retorna cliente=42. GET em t igual a 901 segundos retorna ausência de valor. Expliquem o significado de EX 900, calculem a duração em minutos e indiquem por que o único registro de um pedido não deveria usar essa política de expiração.
+Distingam cache reconstruível e fonte oficial. Proponham como a aplicação identifica que a sessão expirou sem concluir que o cliente foi apagado do cadastro.</p>
+<h2>T1 E7 Caminhos em um grafo</h2>
+<p>Dados: clientes A e B usam dispositivo X; cliente C usa dispositivo Y; A realizou pedido 701. Existe exatamente uma relação USA por par cliente dispositivo no conjunto.</p>
+<pre><code class="language-text">MATCH (a:Cliente {id:'A'})-[:USA]-&gt;(d:Dispositivo)
+      &lt;-[:USA]-(outro:Cliente)
+WHERE outro.id &lt;&gt; a.id
+RETURN DISTINCT outro.id ORDER BY outro.id
+</code></pre>
+<p>Resultado fornecido: B. Descrevam o caminho percorrido e a função de DISTINCT. Expliquem por que a consulta não retorna C e por que compartilhar dispositivo não constitui, por si só, prova de fraude. Indiquem um custo de ampliar indiscriminadamente a profundidade de navegação.</p>
+<h1>Exercícios de interpretação temporal e vetorial</h1>
+<h2>T1 E8 Janela de tempo e agregação</h2>
+<p>A tabela medicao contém servico checkout e as observações em UTC de 22 setembro 2026: 10h00 com 90 ms; 10h01 com 110 ms; 10h02 com 210 ms; 10h03 com 120 ms. Não há outras linhas no intervalo.</p>
+<pre><code class="language-sql">SELECT AVG(latencia_ms) AS media_ms,
+       MAX(latencia_ms) AS pico_ms
+FROM medicao
+WHERE servico = 'checkout'
+  AND instante &gt;= TIMESTAMPTZ '2026-09-22 10:00:00+00'
+  AND instante &lt; TIMESTAMPTZ '2026-09-22 10:04:00+00';
+</code></pre>
+<p>Resultados fornecidos: média 132.5 ms e pico 210 ms. Refaçam a conta, expliquem o limite superior exclusivo e indiquem uma informação que a média não preserva. Proponham retenção para detalhe recente e resumo histórico, explicitando que os prazos são decisões do grupo, não exigências universais.</p>
+<h2>T1 E9 Similaridade por distância</h2>
+<p>Use os vetores didáticos q=(1;0), A=(0,9;0,1) e B=(0;1). O ponto e vírgula separa coordenadas; a vírgula representa decimal. Em uma tabela com coluna embedding do tipo vector, considere a ordenação por distância euclidiana do pgvector.</p>
+<pre><code class="language-sql">SELECT id, embedding &lt;-&gt; '[1,0]' AS distancia
+FROM candidato
+ORDER BY distancia, id
+LIMIT 2;
+</code></pre>
+<p>Resultados fornecidos: A com aproximadamente 0.141421 e B com aproximadamente 1.414214. Mostrem o cálculo das duas distâncias, justifiquem a ordem e indiquem por que isso não representa probabilidade de o produto ser adequado. Os vetores foram fornecidos; não é necessário gerar embeddings ou instalar pgvector para esta interpretação.
+Diferenciem uma busca exata da consulta apoiada por um índice aproximado. Citem uma regra de compra que deve continuar sendo verificada após recuperar candidatos.</p>
+<h2>T1 E10 Matriz de seleção</h2>
+<p>Preencham uma linha para cada família: relacional, documentos, chave valor, grafos, séries temporais e vetorial. Colunas obrigatórias: estrutura, operação da Loja Horizonte, consulta dominante, garantia necessária, crescimento esperado, custo operacional e limitação. Crescimento pode ser descrito por padrão de carga, sem inventar benchmark.</p>
+<h2>T1 E11 Duas decisões arquiteturais</h2>
+<p>Produzam ADR 01 para pedidos e reservas e ADR 02 para catálogo e busca. Cada registro contém contexto, decisão, requisito atendido, alternativa rejeitada, compromisso assumido e condição concreta de revisão. Cada ADR deve ter entre 150 e 220 palavras. Combinar capacidades em um mesmo produto é permitido quando justificado.</p></main></html>

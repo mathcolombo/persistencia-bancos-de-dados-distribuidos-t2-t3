@@ -1,0 +1,103 @@
+name: horizonte-lab
+x-db: &db
+  image: postgres:18.6-bookworm@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650
+  environment: &env
+    POSTGRES_PASSWORD: horizonte_local
+    POSTGRES_USER: postgres
+    POSTGRES_DB: horizonte
+    PGDATA: /var/lib/postgresql/18/docker
+  healthcheck:
+    test: [CMD-SHELL, "pg_isready -h 127.0.0.1 -U postgres -d horizonte"]
+    interval: 2s
+    timeout: 3s
+    retries: 40
+  networks: [lab]
+services:
+  basic:
+    <<: *db
+    profiles: [basic]
+    volumes: ["basic_data:/var/lib/postgresql", "./sql:/lab/sql:ro", "./infra/init-basic.sh:/docker-entrypoint-initdb.d/01.sh:ro"]
+  primary:
+    <<: *db
+    profiles: [replica]
+    command: [postgres, -c, wal_level=replica, -c, max_wal_senders=10, -c, wal_keep_size=128MB]
+    volumes: ["primary_data:/var/lib/postgresql", "./infra/init-replica.sh:/docker-entrypoint-initdb.d/01.sh:ro"]
+  standby:
+    <<: *db
+    profiles: [replica]
+    depends_on:
+      primary: {condition: service_healthy}
+    entrypoint: [bash, /lab/standby.sh]
+    volumes: ["standby_data:/var/lib/postgresql", "./infra/standby.sh:/lab/standby.sh:ro"]
+  migration:
+    <<: *db
+    profiles: [migration]
+    volumes: ["migration_data:/var/lib/postgresql", "./sql:/lab/sql:ro", "./infra/init-migration.sh:/docker-entrypoint-initdb.d/01.sh:ro"]
+  saga:
+    <<: *db
+    profiles: [saga]
+    volumes: ["saga_data:/var/lib/postgresql", "./sql:/lab/sql:ro", "./infra/init-saga.sh:/docker-entrypoint-initdb.d/01.sh:ro"]
+  origin:
+    <<: *db
+    profiles: [pitr]
+    entrypoint: [bash, /lab/origin.sh]
+    command: [postgres, -c, wal_level=replica, -c, archive_mode=on, -c, "archive_command=bash /lab/archive.sh %p %f"]
+    volumes: ["origin_data:/var/lib/postgresql", "archive_data:/archive", "backup_data:/backup", "./infra:/lab:ro"]
+  destination:
+    <<: *db
+    profiles: [restore]
+    command: [postgres, -c, archive_mode=off]
+    volumes: ["destination_data:/var/lib/postgresql", "archive_data:/archive:ro"]
+  restore-prep:
+    <<: *db
+    profiles: [restore]
+    healthcheck: {disable: true}
+    entrypoint: [bash, /lab/restore.sh]
+    volumes: ["destination_data:/var/lib/postgresql", "backup_data:/backup:ro", "./infra:/lab:ro"]
+  fault-destination:
+    <<: *db
+    profiles: [fault]
+    command: [postgres, -c, archive_mode=off]
+    volumes: ["fault_destination_data:/var/lib/postgresql", "empty_archive_data:/archive:ro"]
+  fault-prep:
+    <<: *db
+    profiles: [fault]
+    healthcheck: {disable: true}
+    entrypoint: [bash, /lab/restore.sh]
+    volumes: ["fault_destination_data:/var/lib/postgresql", "backup_data:/backup:ro", "./infra:/lab:ro"]
+  tools:
+    profiles: [tools]
+    build: {context: ., dockerfile: infra/Dockerfile}
+    environment:
+      DB_HOST: basic
+      DB_PASSWORD: horizonte_local
+      PYTHONPATH: /work/exercicios
+    working_dir: /work
+    volumes: [".:/work"]
+    networks: [lab]
+  flyway:
+    platform: linux/amd64
+    profiles: [tools]
+    image: redgate/flyway:13.7.0@sha256:031f7127435cdfcf3aa477b15c88fdd4a42145395d314914426f28dc65c10bfd
+    environment:
+      FLYWAY_URL: jdbc:postgresql://migration:5432/horizonte
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: horizonte_local
+      FLYWAY_CLEAN_DISABLED: 'true'
+      FLYWAY_CONNECT_RETRIES: '20'
+    volumes: ["./migrations:/flyway/sql:ro"]
+    networks: [lab]
+networks:
+  lab: {}
+volumes:
+  basic_data: {}
+  primary_data: {}
+  standby_data: {}
+  migration_data: {}
+  saga_data: {}
+  origin_data: {}
+  destination_data: {}
+  archive_data: {}
+  backup_data: {}
+  fault_destination_data: {}
+  empty_archive_data: {}

@@ -1,0 +1,1 @@
+{"tipo":"HISTORICOS_DIDATICOS","H1":[{"operacao":"leitura","versao":8},{"operacao":"leitura","versao":7}],"H2":[{"operacao":"escrita_propria_confirmada","versao":9},{"operacao":"primeira_leitura_posterior","versao":8}],"H3":{"antes":[8,7,6],"depois":[8,8,8],"premissa":"sem novas escritas e com propagacao"}}

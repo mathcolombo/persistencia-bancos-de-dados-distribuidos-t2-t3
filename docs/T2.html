@@ -1,0 +1,71 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja Horizonte — Aluno</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#243442;background:#f5f7fa;margin:0}main{max-width:1050px;margin:auto;padding:32px 45px;background:white}h1,h2,h3{line-height:1.25;color:#133e50}h1{font-size:2rem}h2{margin-top:2em}nav{display:flex;flex-wrap:wrap;gap:18px;padding:14px;background:#eaf0f5}a{color:#005e8c}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f0f4f7;border-radius:6px;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ccd6df;padding:9px;text-align:left;vertical-align:top}th{background:#eaf0f5}@media(max-width:650px){main{padding:20px}table{display:block;overflow:auto}}@media print{body{background:white}main{padding:0}nav{display:none}}</style><main><nav><a href="../LEIA_PRIMEIRO.html">Início</a><a href="../VERSAO.html">Edição</a><a href="../docs/T1.html">T1</a><a href="../docs/T2.html">T2</a><a href="../docs/T3.html">T3</a><a href="../docs/PROBLEMAS.html">Problemas</a><a href="../docs/VALIDACAO.html">Validação</a></nav><h1>T2 — Distribuição e consistência</h1>
+<p>Preserve a entrega T1. Execute sharding como simulação, replicação como experimento real e CAP/garantias de sessão como análise de cenários.</p>
+<h2>1. Sharding</h2>
+<p>Complete <code>modulo</code>, <code>sucessor</code> e <code>movidas</code> em <code>exercicios/respostas.py</code> ou <code>Respostas.java</code>. As funções SHA-256, geração das chaves e exportação CSV já estão prontas. Java trata o hash de 64 bits <strong>sem sinal</strong>, mesmo armazenando-o em <code>long</code>: usar comparação e resto sem sinal.</p>
+<p>Convenções: chaves K:0000 a K:0999; pontos <code>N:A:00</code> etc.; um ponto por nó ou 16 pontos por nó. Em caso de igualdade, o ponto é dono da chave; além do último ponto, retorna ao primeiro. Os pontos antigos não mudam quando D entra. A faixa tem A=0–333, B=334–666 e C=667–999; nela, o ensaio não adiciona D. Sua movimentação é zero por comparar a configuração consigo mesma, não por demonstrar expansão sem transferência.</p>
+<pre><code class="language-text">python lab.py client python shard evidencias/execucoes/shard-python-1
+python lab.py client python shard evidencias/execucoes/shard-python-2
+</code></pre>
+<p>Ou:</p>
+<pre><code class="language-text">python lab.py client java shard evidencias/execucoes/shard-java-1
+python lab.py client java shard evidencias/execucoes/shard-java-2
+</code></pre>
+<p>Compare CSVs das duas execuções na mesma linguagem: mesmas mil chaves e destinos. Conte somente mudança de <strong>nó físico</strong>. Expliquem desequilíbrio e hot key sem supor que uniformidade de chaves equivale a uniformidade de carga. Executem <code>python lab.py test unit</code> para verificar regras do anel e a massa. Esse teste importa o código Python; grupos Java podem usar os CSVs e os critérios de aceite, ou o professor pode executar a comparação de linguagens descrita na validação.</p>
+<h2>2. Subir a réplica</h2>
+<pre><code class="language-text">python lab.py stop
+python lab.py up replica
+python lab.py sql primary -q &quot;SELECT pg_is_in_recovery();&quot;
+python lab.py sql standby -q &quot;SELECT pg_is_in_recovery();&quot;
+python lab.py sql primary -q &quot;SELECT application_name,state,sync_state FROM pg_stat_replication;&quot;
+</code></pre>
+<p>Esperado: <code>f</code> no primário, <code>t</code> no standby e aplicação <code>standby1</code> em streaming. A primeira inicialização clona o primário com <code>pg_basebackup</code>. Não promover o standby. Se não iniciar, consultar <code>docker compose logs primary standby</code>.</p>
+<h2>3. Observar três modos</h2>
+<pre><code class="language-text">python lab.py client python replica async
+python lab.py client python replica on
+python lab.py client python replica remote_apply
+</code></pre>
+<p>Substitua a linguagem por <code>java</code> para a versão JDBC. Os identificadores são 2001, 2002 e 2003. Cada comando pausa replay, <strong>confirma que a pausa foi efetivada</strong>, faz a escrita em conexão independente, observa a leitura e retoma replay no encerramento normal e nas falhas tratadas.</p>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Durante replay pausado</th>
+<th>Após retomada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>async</td>
+<td>Commit pode confirmar; standby ainda sem a linha</td>
+<td>Linha deve aparecer</td>
+</tr>
+<tr>
+<td>on, com standby síncrono</td>
+<td>Exige flush remoto, mas pode confirmar sem replay</td>
+<td>Linha deve aparecer</td>
+</tr>
+<tr>
+<td>remote_apply</td>
+<td>Cliente deve estar esperando após 3 segundos</td>
+<td>Commit conclui e a linha aparece</td>
+</tr>
+</tbody>
+</table>
+<p>O roteiro mede a duração no próprio cliente com relógio monotônico. O tempo de iniciar Docker/JVM não é a latência do commit registrada. Não comparar latências como benchmark. As consultas são novas transações; um snapshot antigo poderia continuar vendo o estado anterior.</p>
+<p>Pausar replay não impede recebimento de WAL, não simula uma partição de rede e não representa perda de máquina.</p>
+<h2>4. Timeout e resultado desconhecido</h2>
+<pre><code class="language-text">python lab.py client python replica timeout
+</code></pre>
+<p>O caso usa id 2004 e um limite menor que a pausa. O cliente registra sua observação e consulta o primário pelo <strong>mesmo identificador</strong> depois de retomar replay. Dependendo do momento e da API, uma interrupção da espera pode produzir aviso ou erro; registrar o resultado observado. Não assumir que timeout significa rollback nem criar outra identidade para a mesma intenção.</p>
+<h2>5. Recuperação de uma interrupção do processo</h2>
+<p>Se o usuário fechar o terminal ou matar um contêiner, o bloco de limpeza do cliente pode não executar. Em outro terminal:</p>
+<pre><code class="language-text">python lab.py sql standby -q &quot;SELECT pg_wal_replay_resume();&quot;
+python lab.py sql primary -q &quot;ALTER SYSTEM SET synchronous_standby_names='';&quot;
+python lab.py sql primary -q &quot;SELECT pg_reload_conf();&quot;
+python lab.py sql standby -q &quot;SELECT pg_get_wal_replay_pause_state();&quot;
+python lab.py sql primary -q &quot;SELECT * FROM evento_lab ORDER BY id;&quot;
+</code></pre>
+<p>Use <code>reset replica --confirmar APAGAR-LAB</code> somente após salvar os logs, quando precisar repetir os IDs. Não limpar a tabela enquanto houver commit pendente.</p>
+<h2>6. CAP, quorum e sessão</h2>
+<p>Responda <code>docs/analises_T2.md</code>: interseção de conjuntos em N=3, partição 2+1, CAP, leitura 8→7, leitura das próprias escritas e BASE. São análises, não uma declaração de que PostgreSQL usa o mesmo protocolo de quorum do simulador.</p>
+<p>O teste <code>python lab.py test replica --linguagem python</code> executa os quatro modos sequencialmente. <strong>Exige réplica nova</strong>, sem os IDs anteriores. Para testar Java depois, reinicie somente esse perfil. Entregue relatório de até seis páginas e evidências conforme o enunciado.</p></main></html>

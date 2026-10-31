@@ -1,0 +1,46 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja Horizonte — Aluno</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#243442;background:#f5f7fa;margin:0}main{max-width:1050px;margin:auto;padding:32px 45px;background:white}h1,h2,h3{line-height:1.25;color:#133e50}h1{font-size:2rem}h2{margin-top:2em}nav{display:flex;flex-wrap:wrap;gap:18px;padding:14px;background:#eaf0f5}a{color:#005e8c}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f0f4f7;border-radius:6px;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ccd6df;padding:9px;text-align:left;vertical-align:top}th{background:#eaf0f5}@media(max-width:650px){main{padding:20px}table{display:block;overflow:auto}}@media print{body{background:white}main{padding:0}nav{display:none}}</style><main><nav><a href="../LEIA_PRIMEIRO.html">Início</a><a href="../VERSAO.html">Edição</a><a href="../docs/T1.html">T1</a><a href="../docs/T2.html">T2</a><a href="../docs/T3.html">T3</a><a href="../docs/PROBLEMAS.html">Problemas</a><a href="../docs/VALIDACAO.html">Validação</a></nav><h1>T1 — Escolha e modelagem</h1>
+<p>Objetivo: executar SQL e um cliente parametrizado; comparar os seis modelos e justificar duas decisões.</p>
+<h2>1. Preparar a massa</h2>
+<pre><code class="language-text">python lab.py up basic
+python lab.py sql basic -f sql/sanity.sql
+</code></pre>
+<p>Contagens: cliente 2; produto 3; estoque 3; pedido 2; item_pedido 4. O bloco de sanidade captura violações esperadas em subtransações e deixa a massa intacta. Para demonstrar explicitamente <code>BEGIN</code>/<code>ROLLBACK</code>, entre no psql:</p>
+<pre><code class="language-text">docker compose exec basic psql -U postgres -d horizonte
+</code></pre>
+<p>Digite uma linha de cada vez:</p>
+<pre><code class="language-sql">BEGIN;
+INSERT INTO item_pedido VALUES(701,30,0,50);
+ROLLBACK;
+BEGIN;
+INSERT INTO pedido VALUES(999,999,'CRIADO',1);
+ROLLBACK;
+</code></pre>
+<p>O primeiro INSERT deve falhar pelo CHECK de quantidade; o segundo pela chave estrangeira do cliente. Guarde as mensagens e saia com <code>\q</code>. Não usar <code>ON CONFLICT</code> para esconder as falhas esperadas.</p>
+<h2>2. Completar as consultas</h2>
+<p>Edite <code>sql/03_consultas.sql</code> nos pontos indicados. A consulta de pedidos precisa reunir pedido, cliente e itens e usar o preço <strong>histórico</strong> do item. Resultados: pedido 701 = 260,00 e pedido 702 = 195,00. Usar o preço atual da mochila produziria 200,00 para o segundo pedido e violaria o requisito.</p>
+<pre><code class="language-text">python lab.py sql basic -f sql/03_consultas.sql
+</code></pre>
+<p>No catálogo, TRILHA entre 80 e 120 deve retornar produto 10; entre 40 e 60 deve retornar produto 30. Os limites são inclusivos.</p>
+<h2>3. Completar o cliente</h2>
+<p>Escolha <code>exercicios/respostas.py</code> → <code>catalogo_sql</code> <strong>ou</strong> <code>exercicios/Respostas.java</code> → <code>catalogoSql</code>. O cliente já recebe e valida parâmetros, abre e fecha a conexão; falta a consulta parametrizada. Python usa <code>%s</code>; JDBC usa <code>?</code>. A ordem é categoria, mínimo e máximo. Não adicionar aspas ao placeholder nem interpolar entrada no SQL.</p>
+<p>Python:</p>
+<pre><code class="language-text">python lab.py client python catalogo TRILHA 80 120
+python lab.py client python catalogo TRILHA 40 60
+python lab.py client python catalogo TRILHA 500 600
+python lab.py client python catalogo TRILHA 120 80
+</code></pre>
+<p>Java:</p>
+<pre><code class="language-text">python lab.py client java catalogo TRILHA 80 120
+python lab.py client java catalogo TRILHA 40 60
+python lab.py client java catalogo TRILHA 500 600
+python lab.py client java catalogo TRILHA 120 80
+</code></pre>
+<p>Esperado: produto 10; produto 30; lista vazia; erro legível de faixa inválida. O último comando retorna código diferente de zero de propósito.</p>
+<h2>4. Interpretar e justificar</h2>
+<p>Use <code>docs/interpretacoes_T1.md</code>, com dados, consultas e resultados fornecidos para documentos, chave-valor, grafos, séries temporais e vetores. Não instalar MongoDB, Redis, Neo4j ou pgvector para esses itens.</p>
+<p>Preencha <code>modelos/matriz.csv</code> e duas cópias de <code>modelos/ADR.md</code>. Os arquivos de interpretação apresentam resultados didáticos fornecidos; identifique-os como tal. Anexe a contribuição individual e o relatório de até quatro páginas conforme o enunciado.</p>
+<h2>5. Conferência</h2>
+<pre><code class="language-text">python lab.py test t1 --linguagem python
+</code></pre>
+<p>Troque <code>python</code> por <code>java</code> após <code>--linguagem</code> se essa foi sua escolha. O teste verifica a massa, a execução das consultas, os casos do cliente e a rejeição de faixa inválida. Ele não avalia automaticamente a qualidade da matriz nem das ADRs.</p>
+<p>Crie a tag/commit T1. Pare o perfil ao terminar: <code>python lab.py stop</code>.</p></main></html>

@@ -1,0 +1,7 @@
+ordem,evento,estado_C,estado_P1,estado_P2
+1,C envia PREPARE,,,
+2,P1 e P2 persistem PREPARED e votam SIM,,,
+3,C persiste decisao COMMIT,,,
+4,P1 recebe COMMIT e confirma,,,
+5,C falha antes de enviar decisao a P2,,,
+6,P2 nao alcanca C nem recebe informacao de P1,,,

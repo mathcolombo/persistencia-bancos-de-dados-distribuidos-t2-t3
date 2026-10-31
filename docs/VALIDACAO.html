@@ -1,0 +1,114 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja Horizonte — Aluno</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#243442;background:#f5f7fa;margin:0}main{max-width:1050px;margin:auto;padding:32px 45px;background:white}h1,h2,h3{line-height:1.25;color:#133e50}h1{font-size:2rem}h2{margin-top:2em}nav{display:flex;flex-wrap:wrap;gap:18px;padding:14px;background:#eaf0f5}a{color:#005e8c}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f0f4f7;border-radius:6px;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ccd6df;padding:9px;text-align:left;vertical-align:top}th{background:#eaf0f5}@media(max-width:650px){main{padding:20px}table{display:block;overflow:auto}}@media print{body{background:white}main{padding:0}nav{display:none}}</style><main><nav><a href="../LEIA_PRIMEIRO.html">Início</a><a href="../VERSAO.html">Edição</a><a href="../docs/T1.html">T1</a><a href="../docs/T2.html">T2</a><a href="../docs/T3.html">T3</a><a href="../docs/PROBLEMAS.html">Problemas</a><a href="../docs/VALIDACAO.html">Validação</a></nav><h1>Validação e liberação para a turma</h1>
+<h2>O que foi verificado na autoria</h2>
+<p>Data: 23/09/2026. Não havia Docker Engine/Compose disponível neste ambiente.</p>
+<table>
+<thead>
+<tr>
+<th>Verificação</th>
+<th>Resultado</th>
+<th>Limite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compilação sintática dos módulos Python</td>
+<td>Passou</td>
+<td>Não abre conexões reais</td>
+</tr>
+<tr>
+<td>Seis testes unitários de hash, anel, movimentação e decisões da Saga</td>
+<td>Passaram</td>
+<td>Não validam persistência nem falhas reais</td>
+</tr>
+<tr>
+<td>Java compilado pelo Eclipse ECJ 3.38, alvo Java 17</td>
+<td>Passou</td>
+<td>O kit usa JDK 21; compilação na imagem ainda pendente</td>
+</tr>
+<tr>
+<td>Simuladores Java e Python executados</td>
+<td>Passaram</td>
+<td>Simulação em memória</td>
+</tr>
+<tr>
+<td>Comparação dos quatro CSVs, mil chaves cada</td>
+<td>Idênticos entre linguagens</td>
+<td>Não é benchmark ou cluster real</td>
+</tr>
+<tr>
+<td>Dez arquivos SQL analisados com parser PostgreSQL</td>
+<td>Passaram</td>
+<td>Não executa DDL, PL/pgSQL ou Flyway</td>
+</tr>
+<tr>
+<td>Scripts shell analisados com bash -n</td>
+<td>Passaram</td>
+<td>Não testa permissões de volumes</td>
+</tr>
+<tr>
+<td>Compose validado contra schema da especificação</td>
+<td>Passou</td>
+<td>Não cria rede/serviços</td>
+</tr>
+<tr>
+<td>Quatro manifestos de imagem consultados</td>
+<td>Encontrados; digests fixados</td>
+<td>Não foram baixadas/executadas as imagens</td>
+</tr>
+<tr>
+<td>Testes Docker de T1, réplica, migração, Saga e PITR</td>
+<td><strong>Não executados</strong></td>
+<td>Obrigatórios antes da liberação</td>
+</tr>
+<tr>
+<td>Ensaios Windows/macOS/Linux e tempos de alunos</td>
+<td><strong>Não executados</strong></td>
+<td>Medir em máquina representativa</td>
+</tr>
+</tbody>
+</table>
+<p>Os CSVs produzidos pelos simuladores estão no pacote do professor, identificados como execução de simulação. Não há logs fictícios de PostgreSQL, Flyway ou PITR.</p>
+<h2>Roteiro de aceite local do professor ou responsável pelo laboratório</h2>
+<p>Use <strong>a versão de referência</strong>, em pasta separada da versão dos alunos. Registre sistema, CPU/arquitetura, memória disponibilizada ao Docker e tempo real. Este procedimento instala apenas as dependências previstas, sem usar conta cloud.</p>
+<pre><code class="language-text">python lab.py doctor
+python lab.py build
+python lab.py test unit
+python lab.py test t1 --linguagem python
+python lab.py test t1 --linguagem java
+python lab.py test saga --linguagem python
+python lab.py test saga --linguagem java
+</code></pre>
+<p>Os testes da Saga geram IDs novos e podem ser repetidos. Para migração e réplica, os testes exigem massa nova:</p>
+<pre><code class="language-text">python lab.py test migration --linguagem python
+python lab.py reset migration --confirmar APAGAR-LAB
+python lab.py test migration --linguagem java
+python lab.py test replica --linguagem python
+python lab.py reset replica --confirmar APAGAR-LAB
+python lab.py test replica --linguagem java
+python lab.py test pitr
+</code></pre>
+<p>Não fazer reset antes de copiar os logs necessários. O teste PITR é comum às linguagens porque executa ferramentas PostgreSQL e a interface padrão do host; a parte Java/Python de T3 está nos clientes de migração/backfill e Saga.</p>
+<p>Ensaio adicional de WAL ausente, após guardar o primeiro resultado:</p>
+<pre><code class="language-text">python lab.py reset pitr --confirmar APAGAR-LAB
+python lab.py pitr backup
+python lab.py pitr incidente
+python lab.py test pitr-wal-ausente
+python lab.py pitr restaurar
+python lab.py pitr medir
+</code></pre>
+<p>O segundo ensaio contém falha e demora deliberadas: seu RTO não é comparável diretamente ao primeiro. O destino de falha não usa nem altera o arquivo de WAL original.</p>
+<h2>Critérios para liberar</h2>
+<ul>
+<li>Comandos terminam com PASS onde esperado; faixa inválida e falha injetada têm rejeição identificada.</li>
+<li>Consultas mostram os totais 260/195 e os catálogos corretos nas duas linguagens.</li>
+<li>Réplica confirma identidades, espera de remote_apply, retomada e reconciliação após timeout.</li>
+<li>Migração demonstra convivência, NULL, checkpoint, retorno e gate; coluna antiga some só no final.</li>
+<li>S1–S6 mantêm estoque 4 no sucesso ou 5 no cancelamento, sem duplicar cobrança/devolução.</li>
+<li>PITR preserva 1/2, exclui 3, mantém origem vazia e registra alvo e tempos.</li>
+<li>O ensaio de falta de WAL identifica o erro esperado e não produz falso PASS.</li>
+<li>O fluxo de saída após interrupção e o reset preservam os arquivos de evidência e os outros perfis.</li>
+<li>Um integrante consegue seguir README sem conhecer a montagem interna; tempos cabem nos blocos previstos com infraestrutura já preparada.</li>
+</ul>
+<p>Se houver falha, registrar o comando, ambiente e saída e corrigir o kit <strong>antes</strong> de classificar como dificuldade do aluno. Este documento não certifica resultados que ainda não foram observados.</p>
+<h2>Verificação da edição do aluno</h2>
+<p>O pacote do aluno não contém soluções do professor nem CSVs completos resolvidos. Ao instalar, a sanidade do banco deve funcionar. Os testes de código dos pontos a completar devem falhar de forma explícita até o aluno implementá-los. Após a implementação, executar os testes correspondentes. A avaliação ainda exige análise, matriz, ADRs, DR e contribuições; PASS técnico não atribui automaticamente nota integral.</p></main></html>

@@ -1,0 +1,1 @@
+{"tipo":"SIMULACAO_DIDATICA","replicas":["A","B","C"],"pares_WR":[[1,1],[2,2],[3,1]],"particao":[["A","B"],["C"]],"inicial":{"A":0,"B":0,"C":0},"eventos":["escrita x=1 confirmada em A e B","depois da confirmacao, leitura iniciada em C"],"tarefa":"Enumerar conjuntos minimos, intersecoes e respostas possiveis; justificar limites."}

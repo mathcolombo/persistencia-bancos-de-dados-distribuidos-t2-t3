@@ -1,0 +1,148 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loja Horizonte — Aluno</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#243442;background:#f5f7fa;margin:0}main{max-width:1050px;margin:auto;padding:32px 45px;background:white}h1,h2,h3{line-height:1.25;color:#133e50}h1{font-size:2rem}h2{margin-top:2em}nav{display:flex;flex-wrap:wrap;gap:18px;padding:14px;background:#eaf0f5}a{color:#005e8c}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f0f4f7;border-radius:6px;font-size:14px}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ccd6df;padding:9px;text-align:left;vertical-align:top}th{background:#eaf0f5}@media(max-width:650px){main{padding:20px}table{display:block;overflow:auto}}@media print{body{background:white}main{padding:0}nav{display:none}}</style><main><nav><a href="LEIA_PRIMEIRO.html">Início</a><a href="VERSAO.html">Edição</a><a href="docs/T1.html">T1</a><a href="docs/T2.html">T2</a><a href="docs/T3.html">T3</a><a href="docs/PROBLEMAS.html">Problemas</a><a href="docs/VALIDACAO.html">Validação</a></nav><h1>Kit local — Loja Horizonte</h1>
+<p>Persistência de Dados e Bancos Distribuídos • Arquiteturas de Soluções Escaláveis</p>
+<p><strong>Versão 1.0 — 23/09/2026.</strong> Este pacote implementa os recursos dos trabalhos T1, T2 e T3. Leia <code>VERSAO.md</code> para identificar se recebeu o pacote do aluno ou a referência do professor.</p>
+<p><strong>Situação da validação:</strong> código Python verificado; Java compilado e simuladores executados; resultados de distribuição comparados entre linguagens; SQL e YAML analisados sintaticamente. <strong>Os contêineres e os testes de integração não foram executados no ambiente de autoria, que não dispõe de Docker.</strong> Antes de distribuir à turma, executar o roteiro <code>docs/VALIDACAO.md</code> em uma máquina com Docker. Não apresentar este pacote como ensaiado em Windows, macOS ou Linux até realizar esses testes.</p>
+<h2>O que está incluído</h2>
+<ul>
+<li>T1: PostgreSQL com a massa exata dos dois pedidos; SQL, restrições, catálogo em Java/Python e cinco exercícios de interpretação.</li>
+<li>T2: primário e standby reais; pausa de replay; modos assíncrono, <code>on</code> e <code>remote_apply</code>; timeout e reconciliação; simuladores de faixa, módulo e consistent hashing.</li>
+<li>T3: Flyway em fases, cliente antigo e compatível, backfill com checkpoint, retorno controlado e contração protegida; Saga em três bancos lógicos; falhas após efeito remoto; backup físico, WAL e recuperação em outro volume.</li>
+<li>Roteiros de execução, testes de aceitação e modelos de relatório, ADR, contribuição e DR.</li>
+</ul>
+<p>As versões Java e Python implementam catálogo, sharding, replicação, clientes da migração, backfill, Saga e repetição da compensação. Escolher <strong>uma</strong> linguagem para o trabalho. SQL e Docker são comuns. Não há API de pagamento, conta cloud ou serviço pago utilizado pelo código.</p>
+<h2>Pré-requisitos do computador</h2>
+<ol>
+<li>Docker Engine com plugin Compose v2 em Linux, ou uma instalação de Docker compatível com contêineres Linux em Windows/macOS. No Windows, habilitar o backend WSL 2 da instalação escolhida. Verificar as condições de licença da distribuição de Docker adotada pela instituição; o kit não depende de funcionalidades comerciais.</li>
+<li>Python 3.10 ou posterior no host, apenas para <code>lab.py</code>. Este script usa a biblioteca padrão: <strong>não instalar psycopg ou Java no host</strong>. Windows pode usar <code>py -3</code>; macOS/Linux geralmente usam <code>python3</code>.</li>
+<li>Internet para obter imagens e dependências na primeira preparação. Depois de construir e baixar as imagens, os exercícios não precisam de APIs externas.</li>
+<li>Em máquinas ARM (como Apple Silicon), o serviço Flyway usa <code>linux/amd64</code> e requer emulação x86-64 habilitada no Docker. Os outros componentes possuem imagens ARM64. Em Linux ARM sem essa emulação, o perfil de migração não iniciará.</li>
+<li>Como ponto inicial de planejamento, reservar cerca de 4 GB de memória para Docker e 5 GB de disco livre. São estimativas, não requisitos medidos; verificar o consumo na validação. Ativar um perfil de cada vez ajuda a reduzir o consumo.</li>
+</ol>
+<p>Extraia o ZIP inteiro em uma pasta de trabalho e abra o terminal <strong>nessa pasta</strong>. Não execute dentro da visualização do ZIP. Preserve a estrutura de diretórios.</p>
+<h2>Primeiros comandos</h2>
+<p>Nos comandos abaixo, <code>python</code> significa o Python do seu computador. Substitua por <code>py -3</code> no Windows ou <code>python3</code> no macOS/Linux, se necessário. Os argumentos são os mesmos no PowerShell, Terminal do macOS e bash. Não é necessário executar os arquivos <code>.sh</code> diretamente no host.</p>
+<pre><code class="language-text">python lab.py doctor
+python lab.py build
+python lab.py up basic
+python lab.py sql basic -f sql/sanity.sql
+python lab.py status
+</code></pre>
+<p><code>doctor</code> confirma disponibilidade de Docker/Compose e leitura da configuração. <code>build</code> prepara Python, Java e driver JDBC em uma imagem e baixa PostgreSQL/Flyway. Na primeira vez, pode levar vários minutos. <code>up</code> espera a prontidão do servidor; <code>sanity.sql</code> verifica as contagens e as restrições. As mensagens esperadas incluem <code>OK CHECK quantidade</code> e <code>OK FK cliente</code>.</p>
+<p>Em seguida, siga <strong><code>docs/T1.md</code> → <code>docs/T2.md</code> → <code>docs/T3.md</code></strong>. No pacote do aluno há pontos a completar antes de certos comandos funcionarem. Uma mensagem <code>TODO_ALUNO</code> identifica exercício incompleto, não um defeito de instalação.</p>
+<h2>Organização</h2>
+<table>
+<thead>
+<tr>
+<th>Caminho</th>
+<th>Finalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lab.py</code></td>
+<td>Interface de comandos multiplataforma e registro das execuções</td>
+</tr>
+<tr>
+<td><code>compose.yaml</code></td>
+<td>Serviços e volumes isolados por perfil</td>
+</tr>
+<tr>
+<td><code>sql/</code></td>
+<td>Schema, massa, consultas e verificações</td>
+</tr>
+<tr>
+<td><code>clientes/python/app.py</code></td>
+<td>Cliente e serviços em Python</td>
+</tr>
+<tr>
+<td><code>clientes/java/App.java</code></td>
+<td>Cliente e serviços em Java</td>
+</tr>
+<tr>
+<td><code>exercicios/respostas.py</code> ou <code>Respostas.java</code></td>
+<td>Pontos a completar na linguagem escolhida</td>
+</tr>
+<tr>
+<td><code>migrations/expand</code> e <code>migrations/contract</code></td>
+<td>Migrações liberadas em momentos distintos</td>
+</tr>
+<tr>
+<td><code>exercicios/pitr.json</code></td>
+<td>Nome do alvo de recuperação</td>
+</tr>
+<tr>
+<td><code>evidencias/execucoes/</code></td>
+<td>Logs reais gerados pelos comandos e dados de medição</td>
+</tr>
+<tr>
+<td><code>evidencias/referencia/</code></td>
+<td>Exemplos identificados; não são execuções do grupo</td>
+</tr>
+<tr>
+<td><code>docs/</code></td>
+<td>Roteiros, preparação docente e solução de problemas</td>
+</tr>
+<tr>
+<td><code>modelos/</code></td>
+<td>Estruturas para relatório, ADR, DR e contribuições</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>Testes unitários e de integração</td>
+</tr>
+</tbody>
+</table>
+<h2>Perfis e isolamento</h2>
+<table>
+<thead>
+<tr>
+<th>Perfil</th>
+<th>Serviços</th>
+<th>Dados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>basic</td>
+<td>basic</td>
+<td>Massa T1</td>
+</tr>
+<tr>
+<td>replica</td>
+<td>primary, standby</td>
+<td>Réplica T2; não há promoção automática</td>
+</tr>
+<tr>
+<td>migration</td>
+<td>migration</td>
+<td>Cópia de clientes T3 e registros de migração</td>
+</tr>
+<tr>
+<td>saga</td>
+<td>saga</td>
+<td>Bancos lógicos pedidos, estoque e pagamentos</td>
+</tr>
+<tr>
+<td>pitr</td>
+<td>origin, destination e auxiliares</td>
+<td>Origem, backup, WAL e destino separados</td>
+</tr>
+</tbody>
+</table>
+<p>Os três bancos da Saga estão na <strong>mesma instância local</strong>, com transações e conexões independentes. Isso permite estudar fronteiras transacionais; não representa três máquinas nem resistência à perda de uma máquina. Os perfis de migração e PITR usam cópias separadas para preservar T1 e T2.</p>
+<p>O Compose não publica portas do PostgreSQL no host. Os clientes se conectam pelos nomes internos. A senha <code>horizonte_local</code> e a senha de réplica <code>replica_local</code> são exclusivamente didáticas. Não usar este ambiente como serviço de produção.</p>
+<p>As duas edições usam o mesmo nome de projeto Docker (<code>horizonte-lab</code>). Execute somente uma edição por vez na mesma instalação de Docker. Ao trocar da referência para o pacote do aluno, preserve os logs e reinicie os perfis que serão reutilizados; uma migração aplicada pela referência não deve ser reaproveitada como execução do aluno.</p>
+<h2>Parar e reiniciar</h2>
+<pre><code class="language-text">python lab.py stop
+python lab.py up replica
+</code></pre>
+<p>Parar preserva os dados. <code>up</code> não recarrega o schema em volumes existentes.</p>
+<p>Para refazer <strong>um perfil</strong>, primeiro exporte seus logs e então execute, por exemplo:</p>
+<pre><code class="language-text">python lab.py reset replica --confirmar APAGAR-LAB
+python lab.py up replica
+</code></pre>
+<p>A opção de confirmação evita apagar acidentalmente o ensaio. O comando remove somente contêineres e volumes conhecidos daquele perfil, verifica o rótulo do projeto e preserva os arquivos de evidência. <code>reset pitr</code> remove também os backups/WAL locais desse ensaio; só fazer depois de terminar e guardar os resultados. <strong>Não usar <code>docker system prune</code> para reiniciar o laboratório.</strong></p>
+<h2>Evidências e versão</h2>
+<p>Cada chamada a <code>lab.py</code> cria um log com comando, saída e código de retorno em <code>evidencias/execucoes</code>. Os logs de falhas são preservados. O diretório é ignorado por Git por padrão: selecionar conscientemente os arquivos pedidos no enunciado, ou anexá-los à entrega. Não entregar volumes de banco.</p>
+<p>Registrar imagem/digest, versões, linguagem e commit. <code>status</code> mostra os contêineres e o digest do PostgreSQL. As quatro imagens externas estão fixadas por tag e digest de manifesto consultado no registro oficial; registrar também o ambiente efetivamente usado na validação. A primeira construção baixa pacotes de sistema e dependências de suas fontes. O pacote não contém imagens Docker ou instaladores offline.</p>
+<p>O kit reduz montagem de infraestrutura, mas o tempo real ainda deve ser medido com uma máquina representativa. Construção de imagens e problemas de instalação devem ser tratados no suporte previsto.</p></main></html>

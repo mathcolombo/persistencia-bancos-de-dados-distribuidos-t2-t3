@@ -1,0 +1,5 @@
+evidencias/execucoes/
+__pycache__/
+*.class
+.build/
+.env
