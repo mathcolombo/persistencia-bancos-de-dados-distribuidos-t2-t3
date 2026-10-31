@@ -1,0 +1,6 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T primary psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT pg_reload_conf();
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mt
+
+[exit=0]

@@ -1,0 +1,10 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py shard evidencias/execucoes/shard-python-1
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-4b1c7a46fcfc Creating 
+ Container horizonte-lab-tools-run-4b1c7a46fcfc Created 
+{"utc": "2026-10-31T20:25:57.100718+00:00", "erro": "[Errno 13] Permission denied: 'evidencias/execucoes/shard-python-1'", "classe": "PermissionError"}
+
+Error: executing /usr/local/bin/docker-compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py shard evidencias/execucoes/shard-python-1: exit status 1
+
+[exit=1]

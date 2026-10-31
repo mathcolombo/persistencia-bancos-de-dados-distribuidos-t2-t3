@@ -1,0 +1,82 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml build tools
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Image horizonte-lab-tools Building 
+ Image horizonte-lab-tools Building 
+Sending build context to Docker daemon  55.69kB
+
+[1/2] STEP 1/1: FROM eclipse-temurin:21.0.6_7-jdk-jammy@sha256:24a8854594eea72c16822953e6cb96c78d10fc3c77b7b8a60ce8e5ac440a2337 AS jdk
+--> 3ce709a4765c
+[2/2] STEP 1/10: FROM python:3.12.9-slim-bookworm@sha256:48a11b7ba705fd53bf15248d1f94d36c39549903c5d59edcfa2f3f84126e7b44
+[2/2] STEP 2/10: RUN apt-get update && apt-get install -y --no-install-recommends libstdc++6 zlib1g && rm -rf /var/lib/apt/lists/*
+--> Using cache f3dc65fefdb80aae94dfc7a74041812e0ca6b534b81cf27cf8682d5aa3e20cf1
+--> f3dc65fefdb8
+[2/2] STEP 3/10: COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
+--> Using cache a88770ecff01407cd186c52afb044765dca8194a6c668de303636a88f18f4452
+--> a88770ecff01
+[2/2] STEP 4/10: ENV JAVA_HOME=/opt/java/openjdk
+--> Using cache 5641c1ff086a837929ab1764f0ee786c2e24bea31f7a0ed71e5da542969b4ace
+--> 5641c1ff086a
+[2/2] STEP 5/10: ENV PATH="/opt/java/openjdk/bin:${PATH}"
+--> Using cache 0a5bbc797a700afc12b9bf251d7954b7b76ea0b071cea5efe6c1ae009cd88073
+--> 0a5bbc797a70
+[2/2] STEP 6/10: RUN pip install --no-cache-dir psycopg[binary]==3.2.6
+--> Using cache ff36a6aca935719eec4cfd5f65c16840ace4ec7d9f92be6d620983c733414279
+--> ff36a6aca935
+[2/2] STEP 7/10: RUN mkdir -p /opt/drivers && python -c "import urllib.request; urllib.request.urlretrieve('https://repo.maven.apache.org/maven2/org/postgresql/postgresql/42.7.5/postgresql-42.7.5.jar','/opt/drivers/postgresql.jar')"
+--> Using cache a021c847c23b704e3d28684d0b5d8f9f7d772288bca35942cb913d90efc02718
+--> a021c847c23b
+[2/2] STEP 8/10: WORKDIR /work
+--> Using cache f3b16086cbea6cc84df9eeee56db056fee82b00a3f8f52337fb71490027f8fed
+--> f3b16086cbea
+[2/2] STEP 9/10: ENTRYPOINT []
+--> Using cache 2ef66a146a5c0133377c3db7f687cbe6b0ea6ccc16c3c429a3d31f20be397520
+--> 2ef66a146a5c
+[2/2] STEP 10/10: LABEL "com.docker.compose.image.builder"="classic"
+--> Using cache 3f0214a0d8d4749f2cf1d2e93ed3b003f1e5ed3a27ca4c6f0328dd4127beb4d7
+[2/2] COMMIT docker.io/library/horizonte-lab-tools:latest
+--> 3f0214a0d8d4
+Successfully tagged docker.io/library/horizonte-lab-tools:latest
+3f0214a0d8d4749f2cf1d2e93ed3b003f1e5ed3a27ca4c6f0328dd4127beb4d7
+Successfully built 3f0214a0d8d4
+Successfully tagged horizonte-lab-tools
+ Image horizonte-lab-tools Built 
+ Image horizonte-lab-tools Built 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml pull basic flyway
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Image postgres:18.6-bookworm@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650 Pulling 
+ Image redgate/flyway:13.7.0@sha256:031f7127435cdfcf3aa477b15c88fdd4a42145395d314914426f28dc65c10bfd Pulling 
+ 6bd876b3b38f Already exists 0B
+ c56d732b49fe Already exists 0B
+ d1c18bcbca3a Already exists 0B
+ 774043ccc8cc Already exists 0B
+ 0e6c3beb32b1 Already exists 0B
+ c043c1caa591 Already exists 0B
+ bdbb8057313b Already exists 0B
+ ddda533f81f8 Already exists 0B
+ 211cec8da20e Already exists 0B
+ 980abddbe295 Already exists 0B
+ 5178c10d12ba Already exists 0B
+ 9dd6e8795674 Already exists 0B
+ a9bacfc8d232 Already exists 0B
+ 8d76d8de17e8 Pulling fs layer 0B
+ e483435f5ecb Already exists 0B
+ 4f267efc937f Already exists 0B
+ e3a8f7a3bd85 Already exists 0B
+ 25b46b2a13c4 Already exists 0B
+ 4f4fb700ef54 Already exists 0B
+ 4e10c7b12302 Already exists 0B
+ 6e1488230475 Already exists 0B
+ e51aee9c82ec Already exists 0B
+ 2e8080795482 Pulling fs layer 0B
+ 8d76d8de17e8 Download complete 0B
+ 8d76d8de17e8 Download complete 0B
+ Image postgres:18.6-bookworm@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650 Pulled 
+ 2e8080795482 Download complete 0B
+ 2e8080795482 Download complete 0B
+ Image redgate/flyway:13.7.0@sha256:031f7127435cdfcf3aa477b15c88fdd4a42145395d314914426f28dc65c10bfd Pulled 
+
+[exit=0]

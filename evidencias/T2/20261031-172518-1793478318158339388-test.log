@@ -1,0 +1,25 @@
+$ /usr/bin/python -m unittest discover -s tests -p test_unit.py -v
+test_add_only_moves_to_new_node (test_unit.PureTests.test_add_only_moves_to_new_node) ... ok
+test_hash_vector (test_unit.PureTests.test_hash_vector) ... ok
+test_movement_counts_physical_node (test_unit.PureTests.test_movement_counts_physical_node) ... ok
+test_range (test_unit.PureTests.test_range) ... ok
+test_ring_boundary (test_unit.PureTests.test_ring_boundary) ... ok
+test_saga_paths (test_unit.PureTests.test_saga_paths) ... ERROR
+
+======================================================================
+ERROR: test_saga_paths (test_unit.PureTests.test_saga_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/math/Work/Horizonte_Kit_Aluno/tests/test_unit.py", line 23, in test_saga_paths
+    self.assertEqual(app.answer.proxima('COMPENSACAO_PENDENTE'),'liberar')
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/math/Work/Horizonte_Kit_Aluno/exercicios/respostas.py", line 20, in proxima
+    raise NotImplementedError('TODO_ALUNO proxima')
+NotImplementedError: TODO_ALUNO proxima
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.009s
+
+FAILED (errors=1)
+
+[exit=1]

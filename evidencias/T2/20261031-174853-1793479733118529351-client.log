@@ -1,0 +1,9 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py replica async
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-a651ec60ad55 Creating 
+ Container horizonte-lab-tools-run-a651ec60ad55 Created 
+{"utc": "2026-10-31T20:48:54.389736+00:00", "tipo": "REAL", "modo": "async", "replay": "paused", "id": 2001, "linhas_standby": 0, "cliente_esperando": false, "resultado": {"resultado": "confirmado", "duracao_ms": 20.63770799941267}}
+{"utc": "2026-10-31T20:48:54.400104+00:00", "tipo": "REAL", "modo": "async", "replay": "resumed", "confirmacao_consultada_no_primario": 1, "resultado": {"resultado": "confirmado", "duracao_ms": 20.63770799941267}}
+
+[exit=0]

@@ -1,0 +1,25 @@
+$ docker version
+Client:       Podman Engine
+Version:      6.1.4
+API Version:  6.1.4
+Go Version:   go1.27.2-X:nodwarf5
+Git Commit:   464c15fec06f0074c916f9eff87c4806869c2833
+Built:        Tue Oct 13 04:39:25 2026
+OS/Arch:      linux/amd64
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml version
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mDocker Compose version v5.3.1
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml config --quiet
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m
+[exit=0]
+$ docker info --format {{.OSType}}
+Error: template: info:1:2: executing "info" at <.OSType>: can't evaluate field OSType in type system.infoReport
+
+[exit=125]

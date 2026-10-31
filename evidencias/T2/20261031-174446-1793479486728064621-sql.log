@@ -1,0 +1,6 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml exec -T standby psql -X -v ON_ERROR_STOP=1 -U postgres -d horizonte -At -c SELECT * FROM evento_lab WHERE id=1000;
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m1000|1|sanidade pre-pausa
+
+[exit=0]

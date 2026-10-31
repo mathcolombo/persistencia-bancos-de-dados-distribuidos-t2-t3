@@ -1,0 +1,11 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml run --rm --no-deps --user 1000:1000 -e DB_HOST=basic tools python clientes/python/app.py shard evidencias/execucoes/shard-python-2
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-tools-run-e1b180132f3b Creating 
+ Container horizonte-lab-tools-run-e1b180132f3b Created 
+{"utc": "2026-10-31T20:37:39.480630+00:00", "tipo": "SIMULADO", "modo": "faixa", "antes": {"A": 334, "B": 333, "C": 333}, "depois": {"A": 334, "B": 333, "C": 333}, "menor": 333, "maior": 334, "movidas": 0, "percentual": 0.0}
+{"utc": "2026-10-31T20:37:39.485512+00:00", "tipo": "SIMULADO", "modo": "modulo", "antes": {"C": 301, "B": 333, "A": 366}, "depois": {"A": 266, "B": 244, "C": 225, "D": 265}, "menor": 225, "maior": 266, "movidas": 746, "percentual": 74.6}
+{"utc": "2026-10-31T20:37:39.490590+00:00", "tipo": "SIMULADO", "modo": "anel", "antes": {"C": 711, "A": 285, "B": 4}, "depois": {"C": 646, "D": 65, "A": 285, "B": 4}, "menor": 4, "maior": 646, "movidas": 65, "percentual": 6.5}
+{"utc": "2026-10-31T20:37:39.496220+00:00", "tipo": "SIMULADO", "modo": "virtual", "antes": {"B": 410, "A": 273, "C": 317}, "depois": {"B": 193, "D": 318, "A": 264, "C": 225}, "menor": 193, "maior": 318, "movidas": 318, "percentual": 31.8}
+
+[exit=0]

@@ -1,0 +1,71 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml stop primary standby
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Container horizonte-lab-standby-1 Stopping 
+ Container horizonte-lab-standby-1 Stopped 
+ Container horizonte-lab-primary-1 Stopping 
+ Container horizonte-lab-primary-1 Stopped 
+
+[exit=0]
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml rm -f primary standby
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0mGoing to remove horizonte-lab-primary-1, horizonte-lab-standby-1
+ Container horizonte-lab-primary-1 Removing 
+ Container horizonte-lab-standby-1 Removing 
+ Container horizonte-lab-primary-1 Removed 
+ Container horizonte-lab-standby-1 Removed 
+
+[exit=0]
+$ docker volume inspect horizonte-lab_primary_data
+[
+     {
+          "Name": "horizonte-lab_primary_data",
+          "Driver": "local",
+          "Mountpoint": "/home/math/.local/share/containers/storage/volumes/horizonte-lab_primary_data/_data",
+          "CreatedAt": "2026-10-30T18:32:27.187207203-03:00",
+          "Labels": {
+               "com.docker.compose.config-hash": "c90a9170456a6c456e1b222837a192627e3d9b7728f53ea853c5640edba38d3b",
+               "com.docker.compose.project": "horizonte-lab",
+               "com.docker.compose.version": "5.3.1",
+               "com.docker.compose.volume": "primary_data"
+          },
+          "Scope": "local",
+          "Options": {},
+          "MountCount": 0,
+          "NeedsCopyUp": true,
+          "LockNumber": 15
+     }
+]
+
+[exit=0]
+$ docker volume rm horizonte-lab_primary_data
+horizonte-lab_primary_data
+
+[exit=0]
+$ docker volume inspect horizonte-lab_standby_data
+[
+     {
+          "Name": "horizonte-lab_standby_data",
+          "Driver": "local",
+          "Mountpoint": "/home/math/.local/share/containers/storage/volumes/horizonte-lab_standby_data/_data",
+          "CreatedAt": "2026-10-30T18:32:27.177340893-03:00",
+          "Labels": {
+               "com.docker.compose.config-hash": "17ce87c891f2d683c859c2e0415d198677c7cfee8960abd23b3f4a7d6feec8d1",
+               "com.docker.compose.project": "horizonte-lab",
+               "com.docker.compose.version": "5.3.1",
+               "com.docker.compose.volume": "standby_data"
+          },
+          "Scope": "local",
+          "Options": {},
+          "MountCount": 0,
+          "NeedsCopyUp": true,
+          "LockNumber": 14
+     }
+]
+
+[exit=0]
+$ docker volume rm horizonte-lab_standby_data
+horizonte-lab_standby_data
+
+[exit=0]

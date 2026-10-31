@@ -1,0 +1,61 @@
+$ /usr/bin/python -m unittest discover -s tests -p test_unit.py -v
+test_add_only_moves_to_new_node (test_unit.PureTests.test_add_only_moves_to_new_node) ... ERROR
+test_hash_vector (test_unit.PureTests.test_hash_vector) ... ok
+test_movement_counts_physical_node (test_unit.PureTests.test_movement_counts_physical_node) ... ERROR
+test_range (test_unit.PureTests.test_range) ... ok
+test_ring_boundary (test_unit.PureTests.test_ring_boundary) ... ERROR
+test_saga_paths (test_unit.PureTests.test_saga_paths) ... ERROR
+
+======================================================================
+ERROR: test_add_only_moves_to_new_node (test_unit.PureTests.test_add_only_moves_to_new_node)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/math/Work/Horizonte_Kit_Aluno/tests/test_unit.py", line 14, in test_add_only_moves_to_new_node
+    a,b=app.distribution('ABC',mode),app.distribution('ABCD',mode)
+        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/home/math/Work/Horizonte_Kit_Aluno/clientes/python/app.py", line 33, in distribution
+    else:n=answer.sucessor(h(k),points)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/math/Work/Horizonte_Kit_Aluno/exercicios/respostas.py", line 15, in sucessor
+    raise NotImplementedError('TODO_ALUNO sucessor')
+NotImplementedError: TODO_ALUNO sucessor
+
+======================================================================
+ERROR: test_movement_counts_physical_node (test_unit.PureTests.test_movement_counts_physical_node)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/math/Work/Horizonte_Kit_Aluno/tests/test_unit.py", line 27, in test_movement_counts_physical_node
+    self.assertEqual(app.answer.movidas({'k':'A'},{'k':'A'}),0)
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/math/Work/Horizonte_Kit_Aluno/exercicios/respostas.py", line 19, in movidas
+    raise NotImplementedError('TODO_ALUNO movidas')
+NotImplementedError: TODO_ALUNO movidas
+
+======================================================================
+ERROR: test_ring_boundary (test_unit.PureTests.test_ring_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/math/Work/Horizonte_Kit_Aluno/tests/test_unit.py", line 20, in test_ring_boundary
+    self.assertEqual(app.answer.sucessor(50,p),'B')
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/math/Work/Horizonte_Kit_Aluno/exercicios/respostas.py", line 15, in sucessor
+    raise NotImplementedError('TODO_ALUNO sucessor')
+NotImplementedError: TODO_ALUNO sucessor
+
+======================================================================
+ERROR: test_saga_paths (test_unit.PureTests.test_saga_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/math/Work/Horizonte_Kit_Aluno/tests/test_unit.py", line 23, in test_saga_paths
+    self.assertEqual(app.answer.proxima('COMPENSACAO_PENDENTE'),'liberar')
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/math/Work/Horizonte_Kit_Aluno/exercicios/respostas.py", line 23, in proxima
+    raise NotImplementedError('TODO_ALUNO proxima')
+NotImplementedError: TODO_ALUNO proxima
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.004s
+
+FAILED (errors=4)
+
+[exit=1]

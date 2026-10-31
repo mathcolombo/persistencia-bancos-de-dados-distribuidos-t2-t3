@@ -1,0 +1,23 @@
+$ docker compose -p horizonte-lab -f /home/math/Work/Horizonte_Kit_Aluno/compose.yaml up -d --wait --wait-timeout 120 primary standby
+[4m>>>> Executing external compose provider "/usr/local/bin/docker-compose". Please see podman-compose(1) for how to disable this message. <<<<
+
+[0m Volume horizonte-lab_standby_data Creating 
+ Volume horizonte-lab_standby_data Created 
+ Volume horizonte-lab_primary_data Creating 
+ Volume horizonte-lab_primary_data Created 
+ Container horizonte-lab-primary-1 Creating 
+ Container horizonte-lab-primary-1 Created 
+ Container horizonte-lab-standby-1 Creating 
+ Container horizonte-lab-standby-1 Created 
+ Container horizonte-lab-primary-1 Starting 
+ Container horizonte-lab-primary-1 Started 
+ Container horizonte-lab-primary-1 Waiting 
+ Container horizonte-lab-primary-1 Healthy 
+ Container horizonte-lab-standby-1 Starting 
+ Container horizonte-lab-standby-1 Started 
+ Container horizonte-lab-standby-1 Waiting 
+ Container horizonte-lab-primary-1 Waiting 
+ Container horizonte-lab-primary-1 Healthy 
+ Container horizonte-lab-standby-1 Healthy 
+
+[exit=0]
