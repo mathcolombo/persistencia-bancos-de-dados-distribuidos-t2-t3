@@ -68,6 +68,7 @@ services:
   tools:
     profiles: [tools]
     build: {context: ., dockerfile: infra/Dockerfile}
+    userns_mode: keep-id
     environment:
       DB_HOST: basic
       DB_PASSWORD: horizonte_local

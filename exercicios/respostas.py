@@ -6,17 +6,14 @@ def catalogo_sql():
     raise NotImplementedError('TODO_ALUNO catalogo_sql')
 
 def modulo(h, nodes):
-    # TODO_ALUNO T2 E1: índice entre 0 e N-1.
-    raise NotImplementedError('TODO_ALUNO modulo')
+    return nodes[h % len(nodes)]
 
 def sucessor(h, points):
-    # TODO_ALUNO T2 E1: points ordenados (hash, no_fisico, indice_virtual).
-    # Igualdade pertence ao ponto; após último ponto, voltar ao primeiro.
-    raise NotImplementedError('TODO_ALUNO sucessor')
+    i = bisect_left(points, (h,))
+    return points[i % len(points)][1]
 
 def movidas(before, after):
-    # TODO_ALUNO T2 E1: comparar o destino físico da mesma chave.
-    raise NotImplementedError('TODO_ALUNO movidas')
+    return sum(1 for k in before if before[k] != after[k])
 
 def proxima(estado):
     # TODO_ALUNO T3 E3: retorna reservar, pagar, confirmar, liberar ou fim.
